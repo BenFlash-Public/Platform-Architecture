@@ -28,20 +28,27 @@ Analyze for:
 - **App type:** B2B SaaS, consumer app, developer tool, other
 - **Complexity level:** Simple (MVP in 1-2 platforms), moderate (3-4 platforms), complex (5+, real-time sync, offline)
 - **What's missing:** Revenue model? Timeline? Technical constraints?
+- **Risk signals:** Regulated data (health, finance, legal, children, payments)? AI/LLM features? Paired hardware (wearable, BLE device)? Existing code, backend, or audience?
 
 ## Step 2: Adaptive Interview
 
-Ask only the questions that unlock the next decision. Don't ask all 6 — ask the ones that matter.
+Ask only the questions that unlock the next decision. Don't ask all 9 — ask the ones that matter. Question 7 (data sensitivity) is the exception: never skip it when Step 1 found a regulated-data signal.
 
-**ISOLATION FALLBACK:** If running in a non-interactive context (agent, batch, no follow-up interaction expected), skip Step 2 and proceed directly to Step 3 using inferred answers from the intake. Infer conservatively and note all assumptions in the final output (e.g., "Assuming solo developer, no explicit revenue model stated → freemium" or "Users not specified → mobile-first for consumer apps, web-first for B2B").
+**ISOLATION FALLBACK:** If running in a non-interactive context (agent, batch, no follow-up interaction expected), skip Step 2 and proceed directly to Step 3 using inferred answers from the intake. Infer conservatively and record every inferred answer in the Assumptions → Decisions table (see Output Format). Conservative defaults:
+- Team: solo developer, part-time budget (scale timelines per Step 4)
+- Revenue: freemium
+- Users: mobile-first for consumer apps, web-first for B2B
+- Data: if any health, finance, legal, children, or payment signal appears, treat the data as regulated
+- Starting point: greenfield (no existing code)
 
 **Core questions** (ask in order, skip if already answered):
 
 1. **First Platform** — "Given your users, which device/platform do you imagine them using first? Mobile phone, desktop web, native app, or are you genuinely uncertain?"
    - Their answer may guide platform choice (iOS-first vs web-first vs Android-first)
 
-2. **Technical Comfort & Team** — "What's your team's technical background? Are they comfortable building native iOS/Android, or do you prefer web/cross-platform to move faster?"
-   - Informs: native vs React Native vs Electron vs web
+2. **Team & Resources** — "How many people will build this, and roughly how many hours a week? What's their background (native iOS/Android, web, cross-platform)? Is there a monthly budget for infrastructure and store fees?"
+   - Informs: implementation approach (native vs cross-platform vs web — see Step 3), timeline scaling (Step 4), how many platforms can run in parallel
+   - Fixed costs to surface: Apple Developer Program $99/yr, Google Play one-time $25 registration, store commissions, hosting (verify current amounts before quoting)
 
 3. **Revenue Model** — "How are you planning to make money? (Default: freemium, but could be subscription SaaS, one-time purchase, or ads)"
    - Informs: release strategy, platform priority, monetization gating
@@ -55,10 +62,20 @@ Ask only the questions that unlock the next decision. Don't ask all 6 — ask th
 6. **Online/Offline** — "Does your app need to work offline? Or is it always-online?"
    - Informs: local-first architecture, database choices, sync protocol complexity
 
+7. **Data Sensitivity & Compliance** — "Will you store health, financial, legal, payment-card, or children's data, or sell to businesses that will ask for SOC 2? Which countries are your users in?"
+   - Informs: hosting/vendor choices, auth and audit requirements, which regulations apply (see Compliance Overlay in Step 4)
+
+8. **Starting Point** — "Are you starting from scratch, or is there existing code, a backend, an audience, or a hardware device (wearable, BLE gadget) this has to work with?"
+   - Informs: whether to reuse or replace existing assets, migration and backward-compatibility needs; paired hardware usually forces native or cross-platform mobile with background Bluetooth
+
+9. **AI Features** — "Does the product rely on AI/LLM features? If so, is it core to the value or an add-on?"
+   - Informs: on-device vs cloud inference, per-user inference cost (must fit the revenue model), streaming UI, where prompts and user data are sent (feeds Q7)
+
 **Adaptive branching:**
-- If the app is clearly B2B SaaS (CRM, project tool, data dashboard), skip #1 (desktop web is obvious) and focus on #2, #3, #5.
-- If they say "mobile users first," focus on mobile-first template and ask #2, #3, #5 (timeline and sync).
-- If they're unsure about everything, ask all 6 to build context.
+- If the app is clearly B2B SaaS (CRM, project tool, data dashboard), skip #1 (desktop web is obvious) and focus on #2, #3, #5, #7.
+- If they say "mobile users first," focus on the mobile-first template and ask #2, #4, #5.
+- If Step 1 found regulated data, AI features, paired hardware, or existing code, ask #7, #9, or #8 respectively even if nothing else is asked.
+- If they're unsure about everything, ask all 9 to build context.
 - **If running in isolation** (can't get responses), infer answers from context and skip to Step 3.
 
 ## Step 3: Recommend
@@ -84,24 +101,65 @@ Based on their answers, recommend one template + first platform.
 - **Pro tools, developers:** Desktop-First
 - **Browser extension, productivity, in-browser tools:** Browser-Extension-First
 
-**If none of the above fit** (e.g., web-only, CLI tools, APIs, games, hardware-paired apps):
-- Combine two templates: e.g., "Web-First with optional Desktop (Electron)" or "Mobile-First with Browser Extension"
-- Or ask follow-up clarification questions to narrow the decision
+**If none of the above fit**, say so explicitly, then use the closest pattern:
+
+| Situation | Approach |
+|---|---|
+| Web-only product (no native apps planned) | Web-First, stop after Tier 2 (Mobile Web PWA); state that native tiers are out of scope |
+| Two-sided marketplace (e.g., buyers on mobile, sellers on desktop) | Combine: Mobile-First for the consumer side + Web-First for the supplier/admin side, one shared backend |
+| Hardware companion app (wearable, BLE device) | Mobile-First or iOS-First with native or cross-platform BLE; plan background sync limits and firmware-update flow; web dashboard later |
+| API, SDK, or CLI developer product | Web-First for docs, keys, and billing dashboard; the API itself is Tier 1 |
+| Extension + companion app | Browser-Extension-First plus Web-First dashboard (Tier 3 of the extension template) |
+| Games, embedded firmware, smart TV-first | Outside this skill's templates — say so, give only general platform-order guidance, and recommend engine- or platform-specific resources |
+
+Name the combination in the output (e.g., "Mobile-First + Web-First supplier dashboard") so the user sees it isn't a single template.
+
+**Implementation approach** (choose separately from the template — a cross-platform app can still be mobile-first or web-first):
+
+| Approach | Choose when | Watch out for |
+|---|---|---|
+| **Native** (Swift/SwiftUI, Kotlin/Compose) | Deep OS integration (HealthKit, widgets, background BLE), top performance, team has native skills | Two codebases once both mobile platforms ship |
+| **Cross-platform** (React Native/Expo, Flutter, Kotlin Multiplatform) | Small team needs iOS + Android early; team knows JS/TS (React Native), Dart (Flutter), or Kotlin (KMP) | Native modules still needed for some OS features; verify plugin support for each required API before committing |
+| **Web-wrapped** (PWA, Capacitor) | Content/forms apps, fastest path from an existing web app | Weaker background work, push, and store review risk for thin wrappers |
+| **Desktop cross-platform** (Electron, Tauri) | One team shipping macOS + Windows | Memory footprint (Electron), native API gaps |
+
+When the team is 1–2 people and needs both iOS and Android within the first two tiers, default to cross-platform and say why.
 
 ## Step 4: Fill In
 
-Once you've recommended a template, provide:
+Before writing, **read the recommended template file** (and the second one for a combination) from this skill's directory — don't fill it in from memory.
 
-1. **Empty Template** — Show the structure of the recommended template so they know what they're getting
-2. **Filled-In Example** — Complete the template with their app's details at the appropriate detail level:
+Then complete the template with the user's app details at the appropriate detail level.
+
+**Scale the timeline to the team.** Template timelines assume about 2 full-time engineers (rows marked "Parallel" require at least 2). Adjust and state the adjustment:
+- Solo or part-time: run "Parallel" rows one after another and stretch estimates (roughly 1.5–2x for solo full-time; more for part-time). This is a heuristic — label it as one.
+- Larger team: parallel rows can overlap more, but App Store/Play review and beta periods don't shrink.
+
+**Gate tiers on metrics, not dates.** For each tier transition, name the metric that should be met first (e.g., "start Tier 2 when D30 retention ≥ X% and crash-free sessions ≥ 99%"). Let the user set X; suggest a starting value and say it's a starting point.
+
+**Check volatile facts.** Store fees, target API levels, Manifest V3 rules, and payment-link rules change. If a template's **Last verified** date is more than 6 months old, or you're quoting a fee or policy number, verify it against current official documentation first (use a docs lookup tool if available) and cite the source. If you can't verify, say so.
+
+**Compliance Overlay** (apply when Q7 flags regulated data; this is architecture guidance, not legal advice — tell the user to confirm with counsel):
+
+| Data / market | Architecture impact |
+|---|---|
+| Health data, US (HIPAA covered entity or business associate) | Every vendor that touches PHI must sign a BAA — confirm per vendor and per plan tier before choosing hosting, database, analytics, email, and LLM providers; audit logs; encryption at rest and in transit |
+| EU/UK users (GDPR) | Data export and deletion flows, consent records, data-processing agreements, region choice for storage |
+| Payment cards (PCI DSS) | Use hosted payment pages/elements so card data never touches your servers |
+| Children (COPPA and similar) | Parental consent, minimal data collection, restricted ad and analytics SDKs |
+| B2B selling to enterprises (SOC 2) | Audit logging from day 1, SSO/SAML on the roadmap, access reviews |
+| Financial or legal records | Retention rules, audit trails, stricter access control |
+
+Add the relevant rows to the Tier 1 release gates.
 
 **Detail Level Guidance:**
 - **Medium Detail** (default, unless user asked for "detailed" or "comprehensive" upfront):
   - Narrative summary (2–3 paragraphs: why this architecture fits their constraints)
   - Platform status table (with their app name, estimated timeline, tech stack)
   - Tier 1–2 architecture summary (why these platforms, why this order)
-  - Key architectural decisions (sync needs, offline, database approach)
-  - 2–3 critical release gates for Tier 1
+  - Key architectural decisions (sync needs, offline, database approach, implementation approach, AI inference placement if relevant)
+  - 2–3 critical release gates for Tier 1 (plus compliance gates if Q7 applies)
+  - Assumptions → Decisions table
   - ~1000–1500 words total
   
 - **Super Detailed** (if user explicitly asked for "detailed plan," "comprehensive," or "full architecture"):
@@ -123,6 +181,8 @@ Use the appropriate platform template as the base structure (see Template Refere
 - Tier 1–2 architecture summary (why these platforms, why this order)
 - Sync/database architectural notes (if relevant)
 - Release gates for Tier 1
+- Metric gate for moving to Tier 2
+- Assumptions → Decisions table
 
 ## Step 5: Offer Exploration
 
@@ -142,7 +202,7 @@ If they say yes, show 2–3 alternative architectures in a **side-by-side compar
 | **Revenue implications** | (pricing model, platform fees) | (pricing model, platform fees) | (pricing model, platform fees) |
 | **Key tradeoff** | (why recommended) | (vs recommended) | (vs recommended) |
 
-Highlight what changes (e.g., "iOS-first reaches premium users faster but at 30% smaller addressable market than web-first").
+Highlight what changes (e.g., "iOS-first reaches premium iPhone users sooner; web-first reaches more users on day one but without App Store discovery"). Don't invent market-size percentages — cite a source or describe the tradeoff qualitatively.
 
 Let them pick which one resonates, or ask follow-ups.
 
@@ -172,11 +232,15 @@ Always deliver in this order:
 ### 1. Narrative Summary
 2–3 paragraphs explaining *why* you're recommending this architecture. Reference their constraints: "You said your users are mostly on mobile and you want to ship fast, so mobile-first makes sense because…"
 
-### 2. Recommended Template (Empty)
-Show the platform status table structure from the recommended template so they see the roadmap shape.
+### 2. Filled-In Plan
+Complete plan with their app's name, timeline (scaled to their team), Tier 1–5 platforms, implementation approach, and key architectural decisions.
 
-### 3. Filled-In Plan
-Complete plan with their app's name, timeline, Tier 1–5 platforms, and key architectural decisions.
+### 3. Assumptions → Decisions
+A table with one row per assumption (stated or inferred): the assumption, whether the user said it or you inferred it, and which decision it drove. This lets the user spot a wrong guess and see what it changes.
+
+| Assumption | Source | Drives |
+|---|---|---|
+| Solo developer, ~20 hrs/week | Inferred | Cross-platform approach; timeline x2 |
 
 ### 4. Exploration Question
 Ask if they want to compare alternatives. If yes, show 2–3 side-by-side options. If no, you're done.
@@ -189,4 +253,6 @@ Ask if they want to compare alternatives. If yes, show 2–3 side-by-side option
 - **Generalize from their constraints.** Their budget, team, timeline, and user base are the *why* behind every recommendation. Explain it.
 - **No platform is "better."** Native iOS is not better than web; it's different. Your job is to match the right platform to their constraints.
 - **Sync is a game-changer.** Cross-platform sync fundamentally changes architecture complexity. Ask about it directly.
+- **Compliance is a constraint, not a feature.** Regulated data changes which vendors you can use; decide it before picking a backend.
+- **Plan for after launch.** Each template's Post-Launch Operations section covers update cadence, minimum supported versions, and API versioning — include it in Super Detailed output.
 - **Show tradeoffs.** If they ask "but what about [other platform]?", show the real cost: timeline, complexity, money, maintenance burden.

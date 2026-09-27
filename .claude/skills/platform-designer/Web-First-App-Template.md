@@ -11,6 +11,8 @@ description: For B2B SaaS, data dashboards, admin tools where desktop web is pri
 
 **Last verified:** 2026-09-27 (App Store commission rates, Play Store requirements, PWA Service Worker support)
 
+**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+
 ---
 
 ## Platform Status Table
@@ -172,7 +174,7 @@ Native Apps ──┘                 └──> WebSocket Server (for real-time
 
 ---
 
-## Sample Feature Roadmap (16 weeks to Tier 3)
+## Sample Feature Roadmap (28 weeks to Tier 4)
 
 ### Tier 1 (Weeks 1–6): Desktop Web MVP
 - Auth (email/password, OAuth)
@@ -237,3 +239,15 @@ Native Apps ──┘                 └──> WebSocket Server (for real-time
 - [ ] Real users (friends, beta testers) can sign up and use core feature
 - [ ] Browser testing passed (Chrome, Firefox, Safari, mobile Safari)
 - [ ] Load testing: 100 concurrent users, API stays responsive
+
+---
+
+## Post-Launch Operations
+
+| Area | Plan |
+|---|---|
+| **Release cadence** | Continuous deploys behind feature flags; staged rollouts for schema changes |
+| **Database migrations** | Backward-compatible (expand → migrate → contract) so a rollback never needs a restore |
+| **API versioning** | `/v1` from day 1 — native apps (Tiers 3–4) and customer integrations depend on it; publish a deprecation window (e.g., 6–12 months) before removing anything |
+| **Enterprise support** | Status page, incident runbook, and uptime target before selling to larger customers |
+| **Tier gate** | Start native mobile when mobile-web usage and retention justify it, not on a date |

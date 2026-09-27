@@ -11,6 +11,8 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 
 **Last verified:** 2026-09-27 (Manifest V3 requirements, Chrome Web Store policies, Firefox/Safari/Edge extension APIs)
 
+**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+
 ---
 
 ## Platform Status Table
@@ -240,7 +242,7 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 
 ---
 
-## Sample Feature Roadmap (16 weeks to multi-browser)
+## Sample Feature Roadmap (16 weeks to Tier 3)
 
 ### Tier 1 (Weeks 1–8): Chrome MVP
 - Core feature (e.g., content enhancement, data entry)
@@ -317,3 +319,14 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 - [ ] Fix critical bugs within 24 hours
 - [ ] Plan Firefox/Safari/Edge launches
 
+---
+
+## Post-Launch Operations
+
+| Area | Plan |
+|---|---|
+| **Release cadence** | Store reviews take days; batch fixes and keep a hotfix path ready |
+| **Browser changes** | Track Chrome/Firefox/Safari release notes for Manifest V3 and API changes each release cycle |
+| **Backend API versioning** | Old extension versions linger; version the sync/license API and never break a shipped contract |
+| **Permissions** | Any new permission triggers a user re-consent prompt — plan permission changes carefully |
+| **Tier gate** | Start multi-browser launch when Chrome retention and review score targets are met |

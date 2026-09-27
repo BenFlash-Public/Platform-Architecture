@@ -11,6 +11,8 @@ description: For pro tools, developer utilities, power user apps. Ship native ma
 
 **Last verified:** 2026-09-27 (Electron version support, code signing requirements, macOS/Windows deployment options)
 
+**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+
 ---
 
 ## Platform Status Table
@@ -178,7 +180,7 @@ Windows Client ┤
 
 ---
 
-## Sample Feature Roadmap (24 weeks to multi-platform)
+## Sample Feature Roadmap (24 weeks to Tier 3)
 
 ### Tier 1 (Weeks 1–12): Native Desktop + Backend Infrastructure
 - macOS app (Swift + SwiftUI) OR Windows app (C# + .NET MAUI)
@@ -264,3 +266,14 @@ Windows Client ┤
 - [ ] Settings sync tested across devices
 - [ ] Authentication tested (login, token refresh, logout)
 
+---
+
+## Post-Launch Operations
+
+| Area | Plan |
+|---|---|
+| **Release cadence** | Auto-update channel (stable + beta); signed and notarized builds only |
+| **Minimum supported versions** | Support current and previous macOS/Windows versions; state the policy on the download page |
+| **License & sync API** | Version the license-check and sync APIs; offline-cached licenses must keep working after server changes |
+| **Rollback** | Keep the previous build downloadable; auto-updater must be able to roll back a bad release |
+| **Tier gate** | Start the web dashboard when active paid users ask for cross-device access, not on a date |
