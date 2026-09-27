@@ -9,6 +9,8 @@ description: For pro tools, developer utilities, power user apps. Ship native ma
 
 **Platform sequence:** Desktop native (macOS or Windows, Tier 1) → Web Dashboard (Tier 2) → Mobile Web PWA (Tier 3) → Mobile native (Tier 4+)
 
+**Last verified:** 2026-09-27 (Electron version support, code signing requirements, macOS/Windows deployment options)
+
 ---
 
 ## Platform Status Table
@@ -75,7 +77,7 @@ Windows Client ┤
 |-------|---|---|
 | **One-time purchase** | $99 lifetime license (perpetual) | License key in app; server validation |
 | **Subscription** | $10/mo or $99/year | Subscription via Stripe; license renewed yearly |
-| **Freemium** | Free tier (basic features); Pro ($99/mo) | License check at startup; gate features |
+| **Freemium** | Free tier (basic features); Pro ($99/year) | License check at startup; gate features |
 | **Team licensing** | $499/year for up to 5 users | Bulk license keys; seat validation |
 
 **Key difference from mobile:** Desktop users expect offline licensing. Validate license on first run; cache result locally.
@@ -178,29 +180,28 @@ Windows Client ┤
 
 ## Sample Feature Roadmap (24 weeks to multi-platform)
 
-### Tier 1 (Weeks 1–12): Native Desktop
+### Tier 1 (Weeks 1–12): Native Desktop + Backend Infrastructure
 - macOS app (Swift + SwiftUI) OR Windows app (C# + .NET MAUI)
 - License key system (one-time or subscription)
 - Local file management
 - Settings/preferences
 - Auto-update framework
 - Direct distribution (DMG or exe) or App Store submission
+- (Parallel, Weeks 8–12) Backend API (Node/Python/Go)
+- (Parallel, Weeks 8–12) Cloud storage (S3 or GCS), Document sync, Settings sync
 
-### Tier 2 (Weeks 8–12): Cloud Sync (parallel)
-- Backend API (Node/Python/Go)
-- Cloud storage (S3 or GCS)
-- Document sync (Dropbox API or custom)
-- Settings sync across devices
-
-### Tier 3 (Weeks 13–18): Web Dashboard
+### Tier 2 (Weeks 13–18): Web Dashboard
 - Web app (Next.js + React) for cloud access
 - Settings management
 - Team management (if team features)
 - Billing dashboard
 
-### Tier 4 (Weeks 19–24): Mobile PWA + Native
+### Tier 3 (Weeks 19–24): Mobile PWA
 - Mobile web PWA (responsive, offline)
-- iOS/Android native (optional; sync with desktop)
+- Sync with desktop data
+
+### Tier 4 (Weeks 25+): Mobile Native (optional)
+- iOS/Android native apps (optional; sync with desktop)
 
 ---
 

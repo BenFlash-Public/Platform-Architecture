@@ -9,6 +9,8 @@ description: For apps targeting Android-dominant markets (India, SE Asia) or tea
 
 **Platform sequence:** Android native (Tier 1) → Mobile Web PWA (Tier 2) → Web Dashboard (Tier 3) → iOS native (Tier 4) → Wear OS (Tier 5)
 
+**Last verified:** 2026-09-27 (Play Store target API 36+ requirement, Google Play Billing commission rates, Kotlin/Jetpack support)
+
 ---
 
 ## Platform Status Table
@@ -30,7 +32,7 @@ description: For apps targeting Android-dominant markets (India, SE Asia) or tea
 **Challenge:** Android runs on devices from $50 (low memory) to $2000 (flagship).
 
 **Strategy:**
-- **Target API:** Minimum SDK 21 (Android 5.0, 2015); target API 34+ (latest)
+- **Target API:** Minimum SDK 21 (Android 5.0, 2015); target API 36+ (required as of Aug 2024)
 - **Memory:** Design for low-end devices (1GB RAM). If it works on Moto G (2GB RAM), it works everywhere.
 - **Network:** Assume 3G/4G with variable latency; batch requests, implement retry logic
 - **Screen sizes:** Test on phones (5.5–6.5"), tablets (7–10"), foldables (emerging)
@@ -156,7 +158,7 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 - **Firebase:** Analytics, Crashlytics, Cloud Messaging, Authentication all free tier
 - **Hilt:** Dependency injection; reduces boilerplate
 
-**Alternatives:** Java (more boilerplate), Flutter (no access to Play Store beta features), React Native (slower than native)
+**Alternatives:** Java (more boilerplate), React Native (slower than native)
 
 ### Web (React + TypeScript)
 - **React:** Largest ecosystem; easy to hire; 100+ UI libraries
@@ -182,13 +184,13 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 - Push notifications via FCM
 - Play Store launch
 
-### Tier 2 (Weeks 10–14): Web + Growth
+### Tier 2 (Weeks 10–14): Mobile Web PWA
 - Mobile web PWA (responsive, offline)
-- Web dashboard (analytics, user management)
 - Email invite system
 - Basic sharing (view/edit permissions)
 
-### Tier 3 (Weeks 15–20): Retention
+### Tier 3 (Weeks 15–20): Web Dashboard + Retention
+- Web dashboard (analytics, user management)
 - Advanced notifications (campaigns, reminders)
 - Analytics dashboard (charts, user cohorts)
 - Social features (comments, likes)

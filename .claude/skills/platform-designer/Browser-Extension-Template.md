@@ -9,6 +9,8 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 
 **Platform sequence:** Chrome Web Store (Tier 1) → Firefox Add-ons + Safari Extensions + Edge Add-ons (Tier 2, parallel) → Web dashboard (Tier 3, optional) → Electron wrapper (Tier 4, optional)
 
+**Last verified:** 2026-09-27 (Manifest V3 requirements, Chrome Web Store policies, Firefox/Safari/Edge extension APIs)
+
 ---
 
 ## Platform Status Table

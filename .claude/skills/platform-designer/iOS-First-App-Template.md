@@ -9,6 +9,8 @@ description: For premium consumer apps requiring deep OS integration (HealthKit,
 
 **Platform sequence:** iOS native (Tier 1) → Mobile Web PWA (Tier 2) → Web Dashboard (Tier 3) → Android native (Tier 4) → watchOS (Tier 5)
 
+**Last verified:** 2026-09-27 (HealthKit SDK, App Store commission rates, StoreKit 2, iOS minimum version support)
+
 ---
 
 ## Platform Status Table
@@ -168,7 +170,7 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 - **StoreKit 2:** Apple's latest In-App Purchase framework; handles receipts, entitlements, subscriptions
 - **HealthKit:** Native health data integration; automatic iCloud sync
 
-**Alternatives:** Objective-C (deprecated), React Native (slower, harder debugging), Flutter (no HealthKit support)
+**Alternatives:** Objective-C (deprecated), React Native (slower, harder debugging)
 
 ### Web (React + TypeScript)
 - **React:** Largest ecosystem; easy to hire; 100+ UI libraries
@@ -194,13 +196,13 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 - In-app purchase (freemium paywall)
 - iOS app to App Store
 
-### Tier 2 (Weeks 8–12): Web + Growth
+### Tier 2 (Weeks 8–12): Mobile Web PWA
 - Mobile web PWA (responsive, offline)
-- Web dashboard (analytics, insights)
 - Email invite system
 - Basic sharing (view-only)
 
-### Tier 3 (Weeks 13–18): Retention & Features
+### Tier 3 (Weeks 13–18): Web Dashboard + Retention
+- Web dashboard (analytics, insights)
 - Push notifications (workouts, milestones)
 - Social features (friends, leaderboards)
 - Advanced analytics dashboard (charting)

@@ -9,6 +9,8 @@ description: For B2B SaaS, data dashboards, admin tools where desktop web is pri
 
 **Platform sequence:** Desktop Web (Tier 1) → Mobile Web PWA (Tier 2) → iOS native (Tier 3) → Android native (Tier 4) → Desktop native (Tier 5)
 
+**Last verified:** 2026-09-27 (App Store commission rates, Play Store requirements, PWA Service Worker support)
+
 ---
 
 ## Platform Status Table
@@ -172,7 +174,7 @@ Native Apps ──┘                 └──> WebSocket Server (for real-time
 
 ## Sample Feature Roadmap (16 weeks to Tier 3)
 
-### Tier 1 (Weeks 1–6): MVP Launch
+### Tier 1 (Weeks 1–6): Desktop Web MVP
 - Auth (email/password, OAuth)
 - Core feature (user creates/edits content)
 - Team invite system (email-based)
@@ -180,19 +182,19 @@ Native Apps ──┘                 └──> WebSocket Server (for real-time
 - Desktop web launch
 - Stripe integration for subscription
 
-### Tier 1.5 (Weeks 5–8): Mobile Web + Growth
+### Tier 2 (Weeks 5–8 parallel): Mobile Web PWA + Growth
 - Mobile PWA (responsive design)
 - Offline sync (Service Worker + IndexedDB)
 - Push notifications (web push API)
 - Basic analytics dashboard
 
-### Tier 2 (Weeks 9–14): Retention & Features
+### Tier 3 (Weeks 9–18): iOS + Retention & Features
 - Audit logging (who changed what)
 - Advanced permissions (roles: owner, editor, viewer)
 - Bulk operations (CSV import/export)
 - Native iOS app launch (Code reuse from web backend)
 
-### Tier 3 (Weeks 15–24): Scale
+### Tier 4 (Weeks 19–28): Android + Scale
 - Native Android app
 - Advanced reporting (charts, custom reports)
 - Automation/webhooks (trigger actions on events)

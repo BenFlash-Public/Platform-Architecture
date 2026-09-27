@@ -74,6 +74,7 @@ Based on their answers, recommend one template + first platform.
 | **iOS-First (Native)** | Premium consumer, HealthKit/notifications, App Store positioning | iOS native | Pure native iOS if App Store positioning matters or you need deep OS integration (HealthKit, camera, biometric). Android + web follow after iOS 1.0 ships. Slower to scale but highest iOS polish. |
 | **Android-First** | Users in Android-dominant markets, or if team knows Kotlin deeply | Android native | Only choose this if your user base is Android-primary (India, SE Asia, etc.) or your team has Android expertise. iOS + web follow. Rare but valid. |
 | **Desktop-First (macOS/Windows)** | Power users, developers, professional tools | Desktop native (macOS or Windows) | For knowledge workers, developers, or pro tools. Ship native desktop first, web as a secondary platform. Mobile comes much later (if at all). |
+| **Browser-Extension-First** | Browser extensions, productivity tools, web plugins | Chrome Web Store | Ship Chrome Web Store first (Tier 1), then Firefox/Safari/Edge add-ons in parallel. Best when reaching power users already in-browser; cross-browser compatibility required; Manifest V3 planning mandatory. |
 
 **Decision logic:**
 - **Consumer app + mobile users:** Mobile-First
@@ -81,6 +82,11 @@ Based on their answers, recommend one template + first platform.
 - **Premium iOS brand + HealthKit/notifications needed:** iOS-First
 - **Android-dominant market:** Android-First
 - **Pro tools, developers:** Desktop-First
+- **Browser extension, productivity, in-browser tools:** Browser-Extension-First
+
+**If none of the above fit** (e.g., web-only, CLI tools, APIs, games, hardware-paired apps):
+- Combine two templates: e.g., "Web-First with optional Desktop (Electron)" or "Mobile-First with Browser Extension"
+- Or ask follow-up clarification questions to narrow the decision
 
 ## Step 4: Fill In
 
@@ -91,11 +97,12 @@ Once you've recommended a template, provide:
 
 **Detail Level Guidance:**
 - **Medium Detail** (default, unless user asked for "detailed" or "comprehensive" upfront):
-  - Platform status table (with their app name, estimated timeline)
+  - Narrative summary (2–3 paragraphs: why this architecture fits their constraints)
+  - Platform status table (with their app name, estimated timeline, tech stack)
   - Tier 1–2 architecture summary (why these platforms, why this order)
   - Key architectural decisions (sync needs, offline, database approach)
   - 2–3 critical release gates for Tier 1
-  - ~500 words total
+  - ~1000–1500 words total
   
 - **Super Detailed** (if user explicitly asked for "detailed plan," "comprehensive," or "full architecture"):
   - Everything in Medium Detail PLUS
@@ -123,17 +130,21 @@ At the end, ask:
 
 > "This architecture assumes [your key decision, e.g., 'mobile-first with iOS + web shipping together']. Want to explore alternatives? For example, what if you went [Android-first / desktop-first / web-only]? I can show you the tradeoffs side-by-side."
 
-If they say yes, load the **Interactive Comparator**:
-- Show 2–3 alternative architectures in a **side-by-side comparison table** with columns:
-  - Platform sequence (Tier 1–5)
-  - Development timeline (MVP to Tier 3)
-  - Team/skill complexity
-  - Time-to-market for first platform
-  - Backend complexity (sync, offline, databases)
-  - Revenue/monetization implications
-  - Risk factors
-- Highlight key tradeoffs (e.g., "iOS-first faster to market but smaller initial user base vs Web-first slower but larger audience")
-- Let them pick which one resonates most, or ask follow-ups
+If they say yes, show 2–3 alternative architectures in a **side-by-side comparison table**:
+
+| Aspect | [Recommended architecture] | Alternative 1 | Alternative 2 |
+|---|---|---|---|
+| **Platform sequence** | (Tier 1–5) | (Tier 1–5) | (Tier 1–5) |
+| **Time to MVP** | X weeks | X weeks | X weeks |
+| **Team complexity** | (skills/hiring challenge) | (skills/hiring challenge) | (skills/hiring challenge) |
+| **Backend complexity** | (sync, offline, databases) | (sync, offline, databases) | (sync, offline, databases) |
+| **User reach (MVP)** | (initial audience size) | (initial audience size) | (initial audience size) |
+| **Revenue implications** | (pricing model, platform fees) | (pricing model, platform fees) | (pricing model, platform fees) |
+| **Key tradeoff** | (why recommended) | (vs recommended) | (vs recommended) |
+
+Highlight what changes (e.g., "iOS-first reaches premium users faster but at 30% smaller addressable market than web-first").
+
+Let them pick which one resonates, or ask follow-ups.
 
 If they say no, you're done — they have their plan.
 

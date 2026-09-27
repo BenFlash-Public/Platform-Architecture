@@ -9,6 +9,8 @@ description: For consumer/prosumer apps where users access primarily via mobile 
 
 **Platform sequence:** iOS + Mobile Web (Tier 1) → Desktop Web (Tier 2) → Android (Tier 3) → Watch/TV (Tier 4+)
 
+**Last verified:** 2026-09-27 (App Store commission rates, iOS/Android API levels, StoreKit 2 support)
+
 ---
 
 ## Platform Status Table
@@ -90,7 +92,7 @@ Android ─────┘                 ├──> Message Queue (for offline
 **Critical rule:** iOS revenue must align with Web. Examples:
 - If iOS charges $4.99/mo, web should be $4.99/mo (not $5.99)
 - If iOS offers free trial, web should offer same trial length
-- Apple takes 30% on IAP; Stripe takes 2.9% + $0.30. Factor into pricing.
+- Apple takes 30% on IAP (15% for Small Business Program members); Stripe takes 2.9% + $0.30; US users can use external purchase links (30% avoided). Factor into pricing.
 
 ---
 
@@ -160,7 +162,7 @@ Android ─────┘                 ├──> Message Queue (for offline
 
 ## Sample Feature Roadmap (16 weeks to Tier 3)
 
-### Tier 1 (Weeks 1–7): MVP Launch
+### Tier 1 (Weeks 1–7): iOS + Mobile Web MVP
 - Auth (email/password, OAuth)
 - Core feature (user creates/saves something)
 - View library (list/search existing content)
@@ -168,13 +170,13 @@ Android ─────┘                 ├──> Message Queue (for offline
 - Web PWA launch
 - Freemium paywall (Pro subscription $4.99/mo)
 
-### Tier 2 (Weeks 8–14): Growth & Retention
+### Tier 2 (Weeks 8–14): Desktop Web Growth & Retention
 - Desktop web dashboard (if applicable)
 - Notifications (reminders, social engagement)
 - Basic analytics (user cohorts, feature usage)
-- Android native app (leverage iOS learnings)
 
-### Tier 3 (Weeks 15–24): Scale & Monetization
+### Tier 3 (Weeks 15–24): Android + Scale & Monetization
+- Android native app (leverage iOS learnings)
 - Advanced features (depending on app type)
 - Community/social features
 - Creator tools (if applicable)
