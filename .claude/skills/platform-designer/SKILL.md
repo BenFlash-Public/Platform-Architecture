@@ -141,13 +141,14 @@ If they say no, you're done — they have their plan.
 
 ## Template Reference
 
-This skill references five platform-specific architecture templates. Choose based on the user's recommendation and first platform:
+This skill references six platform-specific architecture templates. Choose based on the user's recommendation and first platform:
 
 - **Mobile-First-App-Template.md** — For consumer apps, prosumers. Tier 1: iOS + Mobile Web (parallel) → Desktop Web → Android → Watches. Default for most consumer/creator products.
 - **Web-First-App-Template.md** — For B2B SaaS, dashboards, knowledge worker tools. Tier 1: Desktop Web (instant deploy, no review) → Mobile Web PWA → Native mobile. Best when wide tables, bulk ops, and zero-install trial matter.
 - **iOS-First-App-Template.md** — For premium consumer apps with deep OS integration (HealthKit, notifications, camera). Tier 1: iOS native → Mobile Web PWA → Web Dashboard → Android → watchOS. Pure native iOS if App Store positioning or OS integration matters most.
 - **Android-First-App-Template.md** — For apps targeting Android-dominant markets (India, SE Asia) or teams with deep Kotlin expertise. Tier 1: Android native → Mobile Web PWA → Web Dashboard → iOS → Wear OS. Rare but valid in specific markets.
 - **Desktop-First-App-Template.md** — For pro tools, developer utilities, power user apps. Tier 1: Native macOS or Windows (or Electron for both) → Web Dashboard → Mobile Web PWA → Native mobile (optional). Best for direct distribution, performance-critical workflows, or premium brand positioning.
+- **Browser-Extension-Template.md** — For browser extensions, productivity tools, developer utilities. Tier 1: Chrome Web Store → Firefox Add-ons + Safari Extensions + Edge Add-ons (parallel) → Web dashboard (optional). Best when reaching users in-browser; cross-browser compatibility required; Manifest V3 considerations.
 
 Select the template that matches the recommended first platform from Step 3.
 
