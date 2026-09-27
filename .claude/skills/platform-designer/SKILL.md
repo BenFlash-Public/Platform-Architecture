@@ -108,7 +108,7 @@ Once you've recommended a template, provide:
 
 After providing Medium Detail, ask: "Want me to expand this with more architectural depth (ADRs, full roadmap, risk analysis)?"
 
-Use the **Mobile-First App Template** (if mobile-first) or **Multi-Platform App Template** (if other) as the base structure. Customize the platform status table, ADRs, and roadmap sections with their app's context.
+Use the appropriate platform template as the base structure (see Template Reference below). Customize the platform status table, architectural decisions, and roadmap sections with their app's context.
 
 **For the filled-in version, include at minimum:**
 - Project overview (1–2 sentences about their app)
@@ -141,12 +141,15 @@ If they say no, you're done — they have their plan.
 
 ## Template Reference
 
-This skill references two pre-built architecture templates:
+This skill references five platform-specific architecture templates. Choose based on the user's recommendation and first platform:
 
-- **Mobile-First-App-Template.md** — Tier 1 (iOS + Mobile Web) ship together, then desktop, then Android/PC/watches
-- **Multi-Platform-App-Template.md** — Most-constrained-first approach, covers all platforms equally
+- **Mobile-First-App-Template.md** — For consumer apps, prosumers. Tier 1: iOS + Mobile Web (parallel) → Desktop Web → Android → Watches. Default for most consumer/creator products.
+- **Web-First-App-Template.md** — For B2B SaaS, dashboards, knowledge worker tools. Tier 1: Desktop Web (instant deploy, no review) → Mobile Web PWA → Native mobile. Best when wide tables, bulk ops, and zero-install trial matter.
+- **iOS-First-App-Template.md** — For premium consumer apps with deep OS integration (HealthKit, notifications, camera). Tier 1: iOS native → Mobile Web PWA → Web Dashboard → Android → watchOS. Pure native iOS if App Store positioning or OS integration matters most.
+- **Android-First-App-Template.md** — For apps targeting Android-dominant markets (India, SE Asia) or teams with deep Kotlin expertise. Tier 1: Android native → Mobile Web PWA → Web Dashboard → iOS → Wear OS. Rare but valid in specific markets.
+- **Desktop-First-App-Template.md** — For pro tools, developer utilities, power user apps. Tier 1: Native macOS or Windows (or Electron for both) → Web Dashboard → Mobile Web PWA → Native mobile (optional). Best for direct distribution, performance-critical workflows, or premium brand positioning.
 
-Choose based on the user's primary audience: mobile-first for consumers/prosumers, multi-platform for specialized use cases or when platform selection is genuinely unclear.
+Select the template that matches the recommended first platform from Step 3.
 
 ---
 
