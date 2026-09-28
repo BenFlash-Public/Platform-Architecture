@@ -49,9 +49,9 @@ Working inside this repository, the skill also loads as a project skill, so no i
 
 ## Status
 
-- **Version:** 0.1.0.
+- **Version:** 0.2.0.
 - **Eval results so far:**
-  - The skill scores about 80% on correctness checks vs about 53% without it (Sonnet, single runs; see PR #3).
-  - The latest skill changes haven't been through a multi-run eval yet.
+  - v0.1.0: the skill passed 82% of correctness checks vs 50% without it (Sonnet, evals 1–7, 3 runs each).
+  - v0.2.0 targets the checks that failed repeatedly in that run (unlabelled numbers, ungated optional tiers, BLE battery/OTA gates, Android API levels, deletion vs retention). Its 3-run results are posted on the PR that introduced it.
 - **Compliance guidance:** it's architecture guidance, not legal advice. The skill tells users to confirm with counsel.
 - **License:** MIT (see `LICENSE`).

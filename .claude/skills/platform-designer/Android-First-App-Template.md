@@ -131,7 +131,7 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 ### Play Store Compliance
 - [ ] Privacy policy and terms of service accessible in app + website
 - [ ] Privacy label completed (location, contacts, etc.)
-- [ ] Target SDK 34+ (required by Play Store)
+- [ ] Target API 36+ and minSdk 24 (target API 36 required for new apps and updates from Aug 31, 2026 — [Play target API policy](https://developer.android.com/google/play/requirements/target-sdk); re-check before launch)
 - [ ] Payment flows follow current Play payments policy for each country you ship in (external-link and alternative-billing rules vary by region; verify before launch)
 - [ ] Screenshots (4–8 per language) ready; show key features
 - [ ] App description clear; keywords relevant
@@ -214,7 +214,7 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 | **Blocking main thread** | Janky UI, ANR (Application Not Responding) crashes | Use coroutines/WorkManager; never fetch network on main |
 | **Sync race conditions** | Data loss or duplicate entries | Use timestamps + last-write-wins; extensive offline/online testing |
 | **Large APK size** | Users on 4G hesitant to download | Target < 50MB; use ProGuard/R8 for obfuscation; lazy load features |
-| **Shipping without Play Store compliance** | Rejection; wasted 1–2 weeks | Review Target SDK, privacy label, external payments early |
+| **Shipping without Play Store compliance** | Rejection; wasted 1–2 weeks (estimate) | Review Target SDK, privacy label, external payments early |
 | **No background sync** | Offline data never syncs; users think app is broken | Implement WorkManager; test with airplane mode |
 | **Building iOS in parallel** | Slow MVP; duplicated logic | Finish Android Tier 1, learn lessons, then iOS |
 
