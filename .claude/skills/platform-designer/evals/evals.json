@@ -4,49 +4,128 @@
     {
       "id": 1,
       "prompt": "I want to build a CRM for small real-estate teams. Agents manage leads, brokers see pipeline reports. What platforms should I build first?",
-      "expected_output": "Recommends Web-First. Asks about or assumes team size and SOC 2/enterprise needs. Includes an Assumptions -> Decisions table and a metric gate for Tier 2.",
+      "expected_output": "Recommends Web-First template. Asks adaptive questions or assumes team size + SOC 2 needs. Includes Assumptions → Decisions table with every assumption stated (asked or inferred). Metric gate for Tier 2 transition (e.g., D30 retention, crash-free sessions). Offers exploration question at end. No unsourced numbers.",
+      "rules": [
+        "template_choice: Web-First",
+        "assumptions_table_present: true",
+        "exploration_question_present: true",
+        "tier_1_gates_exclude_retention: true",
+        "no_unsourced_numbers: true"
+      ],
       "files": []
     },
     {
       "id": 2,
       "prompt": "Fitness tracking app for gym-goers in India, I'm a solo Kotlin developer. Design the architecture.",
-      "expected_output": "Recommends Android-First. Scales the timeline for a solo developer and says so. Uses target API 36+ and minSdk 24, not API 34 or minSdk 21.",
+      "expected_output": "Recommends Android-First template. Scales timeline for solo developer (1.5–2x) and states it explicitly. Uses current API levels (API 36+, minSdk 24, verified against official docs). Includes Assumptions → Decisions table. Offers exploration question. No unsourced percentages.",
+      "rules": [
+        "template_choice: Android-First",
+        "timeline_scaled_for_solo: true",
+        "timeline_scaling_stated: true",
+        "api_levels_current: true",
+        "api_levels_sourced: true",
+        "assumptions_table_present: true",
+        "exploration_question_present: true"
+      ],
       "files": []
     },
     {
       "id": 3,
       "prompt": "I want to build a Chrome extension that summarizes articles with an LLM. Which platforms and architecture?",
-      "expected_output": "Recommends Browser-Extension-First (not Web-First). Addresses AI inference placement and per-user inference cost against the revenue model. Mentions Manifest V3.",
+      "expected_output": "Recommends Browser-Extension-First template (not Web-First). Addresses LLM inference placement (cloud vs. on-device) and per-user inference cost impact on revenue model. Mentions Manifest V3. Includes Assumptions → Decisions table. Offers exploration question. No invented percentages.",
+      "rules": [
+        "template_choice: Browser-Extension-First",
+        "not_web_first: true",
+        "ai_inference_placement_addressed: true",
+        "inference_cost_vs_revenue_discussed: true",
+        "manifest_v3_mentioned: true",
+        "assumptions_table_present: true",
+        "exploration_question_present: true"
+      ],
       "files": []
     },
     {
       "id": 4,
       "prompt": "Telehealth app where patients message their therapist and log mood daily. Should I go iOS first or web first?",
-      "expected_output": "Flags regulated health data and applies the Compliance Overlay: BAA required from every vendor touching PHI, audit logs, encryption. Adds compliance items to Tier 1 release gates. Says to confirm with counsel.",
+      "expected_output": "Flags regulated health data and applies Compliance Overlay: BAA required from every vendor, audit logs, encryption, confirm with counsel. Adds compliance gates to Tier 1 release checklist (not as retention targets). Includes Assumptions → Decisions table. Offers exploration question. Template choice (iOS-First or Web-First) justified by compliance + user needs.",
+      "rules": [
+        "health_data_flagged: true",
+        "compliance_overlay_applied: true",
+        "baa_required_mentioned: true",
+        "audit_logs_required: true",
+        "counsel_confirmation_mentioned: true",
+        "compliance_gates_in_tier_1: true",
+        "no_retention_gates_in_tier_1: true",
+        "assumptions_table_present: true",
+        "exploration_question_present: true"
+      ],
       "files": []
     },
     {
       "id": 5,
       "prompt": "Two of us want to ship a habit tracker on iPhone and Android at the same time within 3 months. We both know React. Native or cross-platform?",
-      "expected_output": "Recommends a cross-platform implementation (React Native/Expo) while keeping a platform-first template for sequencing, and explains why. Does not claim Flutter lacks HealthKit support.",
+      "expected_output": "Recommends cross-platform (React Native/Expo) with Mobile-First template for sequencing. Explains why (team size + React expertise + timeline). Includes monetization in Tier 1 (not skipped). Metric gates only for tier transitions (D7 retention → Tier 2, not pre-launch). Assumptions → Decisions table present. Offers exploration question (side-by-side comparison). No unsourced code-share percentages. No Flutter claims.",
+      "rules": [
+        "implementation_approach: cross-platform",
+        "template_choice: Mobile-First",
+        "explains_why_cross_platform: true",
+        "monetization_in_tier_1: true",
+        "no_retention_gates_pre_launch: true",
+        "assumptions_table_present: true",
+        "exploration_question_present: true",
+        "no_unsourced_percentages: true",
+        "no_flutter_capability_claims: true"
+      ],
       "files": []
     },
     {
       "id": 6,
       "prompt": "We make a BLE smart ring. Need a companion app that syncs sleep data to the cloud and a dashboard for users. Architecture?",
-      "expected_output": "Uses the hardware-companion path: mobile-first or iOS-first with background BLE, firmware-update flow, web dashboard later. Names the combination explicitly.",
+      "expected_output": "Uses hardware-companion path: Mobile-First (companion) + Web-First (dashboard) explicitly named. Includes background BLE sync design and firmware OTA flow. Isolation mode: assumes solo developer (not 2-4). Tier 1 includes BLE reliability gates (sync success %, battery impact). Assumptions → Decisions table with every inferred answer. Offers exploration question. No unsourced assumptions.",
+      "rules": [
+        "hardware_companion_pattern: true",
+        "templates_explicitly_named: true",
+        "ble_background_sync_detailed: true",
+        "firmware_ota_flow_included: true",
+        "isolation_mode_solo_developer: true",
+        "ble_gates_in_tier_1: true",
+        "no_retention_gates_in_tier_1: true",
+        "assumptions_table_present: true",
+        "exploration_question_present: true"
+      ],
       "files": []
     },
     {
       "id": 7,
       "prompt": "Design the architecture for a marketplace where home cooks sell meals: buyers order on their phones, cooks manage menus and orders on a laptop. Run without asking me questions.",
-      "expected_output": "Runs the isolation fallback: no questions asked. Combines Mobile-First (buyers) + Web-First (cooks) on one backend. Flags payments (PCI: hosted payment pages). Every inferred answer appears in the Assumptions -> Decisions table.",
+      "expected_output": "Runs isolation fallback: no questions asked, skips adaptive interview. Recommends Mobile-First (buyers) + Web-First (cooks) with one backend. Flags PCI DSS with SAQ A (not invented 'SAC'). Flags cottage food laws (state-by-state) as launch blocker. Assumes solo developer (isolation default). Every inferred answer in Assumptions → Decisions table with Source column (Stated vs. Inferred). Offers exploration question. No unsourced commission percentages.",
+      "rules": [
+        "isolation_mode_no_questions: true",
+        "templates_explicitly_combined: true",
+        "pci_dss_flagged: true",
+        "pci_saq_a_mentioned: true",
+        "cottage_food_laws_flagged: true",
+        "isolation_solo_developer_assumed: true",
+        "assumptions_table_complete: true",
+        "assumptions_have_source_column: true",
+        "exploration_question_present: true",
+        "no_unsourced_numbers: true"
+      ],
       "files": []
     },
     {
       "id": 8,
       "prompt": "I'm building a multiplayer mobile game with Unity. What platforms should I launch on?",
-      "expected_output": "States that games are outside this skill's templates, gives only general platform-order guidance, and does not force-fit a template.",
+      "expected_output": "States games are explicitly out-of-scope (not force-fit to a template). Explains why (engine lock-in, performance constraints, netcode, store economics differ). Gives general guidance (mobile-first, then PC, then console). Recommends engine-specific resources (Unity docs, Netcode, Steam partner program). No filled-in architecture plan.",
+      "rules": [
+        "out_of_scope_explicitly_stated: true",
+        "no_template_forced: true",
+        "reasons_explained: true",
+        "general_platform_order_given: true",
+        "engine_resources_recommended: true",
+        "unity_documentation_linked: true",
+        "no_filled_in_plan: true"
+      ],
       "files": []
     }
   ]

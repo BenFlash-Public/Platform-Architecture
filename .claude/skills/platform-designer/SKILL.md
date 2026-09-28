@@ -135,7 +135,7 @@ Then complete the template with the user's app details at the appropriate detail
 - Solo or part-time: run "Parallel" rows one after another and stretch estimates (roughly 1.5–2x for solo full-time; more for part-time). This is a heuristic — label it as one.
 - Larger team: parallel rows can overlap more, but App Store/Play review and beta periods don't shrink.
 
-**Gate tiers on metrics, not dates.** For each tier transition, name the metric that should be met first (e.g., "start Tier 2 when D30 retention ≥ X% and crash-free sessions ≥ 99%"). Let the user set X; suggest a starting value and say it's a starting point.
+**Gate tiers on metrics, not dates.** For each tier transition, name the metric that should be met first (e.g., "start Tier 2 when D30 retention ≥ X% and crash-free sessions ≥ 99%"). Let the user set X; suggest a starting value and say it's a starting point. **Do not list retention or engagement metrics as Tier 1 release gates**—those are measured post-launch. Tier 1 gates cover functionality, stability (crash-free sessions), compliance, and performance (load times, API response times). Retention gates apply only to *transitions between tiers* after the product ships.
 
 **Check volatile facts.** Store fees, target API levels, Manifest V3 rules, and payment-link rules change. If a template's **Last verified** date is more than 6 months old, or you're quoting a fee or policy number, verify it against current official documentation first (use a docs lookup tool if available) and cite the source. If you can't verify, say so.
 
@@ -144,11 +144,13 @@ Then complete the template with the user's app details at the appropriate detail
 | Data / market | Architecture impact |
 |---|---|
 | Health data, US (HIPAA covered entity or business associate) | Every vendor that touches PHI must sign a BAA — confirm per vendor and per plan tier before choosing hosting, database, analytics, email, and LLM providers; audit logs; encryption at rest and in transit |
+| Consumer health data, US (not HIPAA, e.g., fitness/wellness apps) | FTC Health Breach Notification Rule applies. Notify users of any breach involving personal health information. Encryption recommended; audit logging for access to user data. Does not require BAA but requires disclosure. |
 | EU/UK users (GDPR) | Data export and deletion flows, consent records, data-processing agreements, region choice for storage |
-| Payment cards (PCI DSS) | Use hosted payment pages/elements so card data never touches your servers |
+| Payment cards (PCI DSS) | Use hosted payment pages or payment elements (Stripe, Square, etc.) so card data never touches your servers. Merchant completes SAQ A self-assessment questionnaire (PCI SSC). |
 | Children (COPPA and similar) | Parental consent, minimal data collection, restricted ad and analytics SDKs |
 | B2B selling to enterprises (SOC 2) | Audit logging from day 1, SSO/SAML on the roadmap, access reviews |
 | Financial or legal records | Retention rules, audit trails, stricter access control |
+| Regulated physical goods (food, alcohol) in marketplace | Check cottage food laws (US: state-by-state), licensing requirements for alcohol sales, and age verification. These are launch blockers for some states/countries. |
 
 Add the relevant rows to the Tier 1 release gates.
 
