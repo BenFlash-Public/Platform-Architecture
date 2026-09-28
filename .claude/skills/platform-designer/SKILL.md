@@ -146,7 +146,7 @@ Then complete the template with the user's app details at the appropriate detail
 - These multipliers are heuristics — label them as such.
 - Do the arithmetic and check it: each scaled row's week span must equal its base duration × the multiplier you state. If you round or adjust, say so.
 
-**Label every number where it appears.** Week ranges, thresholds (crash-free %, pairing success %, retention %), prices, and code-share figures each need a visible label: "estimate", "suggested starting value", "heuristic", or a cited source. One footnote under the platform table ("All week ranges are estimates, scaled ~3x from the template's 2-engineer baseline") covers the table; write "suggested" next to each gate threshold. An unlabelled number reads as a fact.
+**Label every number where it appears.** Week ranges, thresholds (crash-free %, pairing success %, retention %), prices, and code-share figures each need a visible label: "estimate", "suggested starting value", "heuristic", or a cited source. One footnote under the platform table ("All week ranges are estimates, scaled ~3x from the template's 2-engineer baseline") covers the table; write "suggested" next to each gate threshold. This includes every threshold you carry over from a template's release gates (launch time, p95 latency, reconnect time, crash-free %, battery drain) — the template numbers are starting points, not facts. An unlabelled number reads as a fact.
 
 **Tier 1 launch tracks vs post-launch tiers.** Anything built in parallel with Tier 1 is a **Tier 1 launch track**: it ships with the launch, needs its own engineer, and has no metric gate. Every **Tier 2+** tier is post-launch: it starts only after the previous tier has shipped *and* its metric gate is met. That means a measurement window (plan ~4 weeks) between launch and the next tier. Check before output: no Tier 2+ row may start before the previous tier's launch week plus its measurement window.
 
@@ -179,7 +179,7 @@ Then complete the template with the user's app details at the appropriate detail
 | Deletion requests vs record retention | Records a business or provider must legally keep (medical, financial, tax) can't simply be purged on request. Design a restricted/archived state with a documented retention schedule, and confirm with counsel |
 | Regulated physical goods (food, alcohol) in marketplace | Check cottage food laws (US: state-by-state), licensing requirements for alcohol sales, and age verification. These are launch blockers for some states/countries. |
 
-Add the relevant rows to the Tier 1 release gates.
+Add the relevant rows to the Tier 1 release gates. **Apply each row in full, not in summary:** every requirement in an applied row becomes its own gate item (e.g., the FTC row means notifying users, the FTC, and the media where required — not just "a breach plan"; the business-associate row means stating that you'll sign BAAs with your customers). If health, financial, or legal records are involved, also apply the deletion-vs-retention row. Whenever any row applies, end the compliance section with: "Confirm this approach with counsel — this is architecture guidance, not legal advice."
 
 **Detail Level Guidance:**
 - **Medium Detail** (default, unless user asked for "detailed" or "comprehensive" upfront):
