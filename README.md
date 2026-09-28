@@ -54,4 +54,4 @@ Working inside this repository, the skill also loads as a project skill, so no i
   - The skill scores about 80% on correctness checks vs about 53% without it (Sonnet, single runs; see PR #3).
   - The latest skill changes haven't been through a multi-run eval yet.
 - **Compliance guidance:** it's architecture guidance, not legal advice. The skill tells users to confirm with counsel.
-- **License:** not yet chosen. Until one is added, the default copyright applies.
+- **License:** MIT (see `LICENSE`).

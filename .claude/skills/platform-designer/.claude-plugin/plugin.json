@@ -6,8 +6,16 @@
   "author": {
     "name": "Ben Lovett"
   },
+  "license": "MIT",
   "repository": "https://github.com/BenFlash-Public/Platform-Architecture",
-  "keywords": ["architecture", "platform", "mobile", "web", "roadmap", "compliance"],
+  "keywords": [
+    "architecture",
+    "platform",
+    "mobile",
+    "web",
+    "roadmap",
+    "compliance"
+  ],
   "skills": [
     "./"
   ]
