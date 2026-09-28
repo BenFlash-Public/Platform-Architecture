@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "platform-designer",
+  "version": "0.1.0",
+  "description": "Designs a platform architecture for a new app idea: which platforms to ship first, native vs cross-platform, tier-by-tier rollout with metric gates, and compliance (HIPAA, GDPR, PCI, DPDP) built into the launch checklist.",
+  "author": {
+    "name": "Ben Lovett"
+  },
+  "repository": "https://github.com/BenFlash-Public/Platform-Architecture",
+  "keywords": ["architecture", "platform", "mobile", "web", "roadmap", "compliance"],
+  "skills": [
+    "./"
+  ]
+}
