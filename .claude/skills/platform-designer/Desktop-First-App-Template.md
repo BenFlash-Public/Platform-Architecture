@@ -11,7 +11,7 @@ description: For pro tools, developer utilities, power user apps. Ship native ma
 
 **Last verified:** 2026-09-27 (Electron version support, code signing requirements, macOS/Windows deployment options)
 
-**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+**Timeline assumption:** Week ranges assume ~2 full-time engineers. Rows marked "Parallel" are Tier 1 launch tracks: they ship with the launch, need a second engineer, and have no metric gate. Tier 2+ rows are post-launch: each starts after the previous tier ships plus a ~4-week measurement window for its metric gate. Scale per SKILL.md Step 4.
 
 ---
 
@@ -21,9 +21,9 @@ description: For pro tools, developer utilities, power user apps. Ship native ma
 |------|----------|----------|-----------|--------|-------|
 | **1** | macOS (native) | Weeks 1–12 | Swift/SwiftUI or Electron | Critical path | Direct distribution via App Store or DMG |
 | **1** | Windows (native) | Weeks 1–12 | C#/.NET MAUI or Electron | Critical path | Direct distribution via Microsoft Store or exe |
-| **2** | Web Dashboard | Weeks 13–18 | Next.js, React, Tailwind | Post-launch | Cloud sync, admin, settings, cross-platform access |
-| **3** | Mobile Web PWA | Weeks 19–24 | React, Service Worker | Post-launch | Responsive design; offline support |
-| **4** | iOS / Android | Weeks 25+ | Swift / Kotlin | Optional | Secondary; sync with desktop via cloud |
+| **2** | Web Dashboard | Weeks 17–22 | Next.js, React, Tailwind | Post-launch | Cloud sync, admin, settings, cross-platform access |
+| **3** | Mobile Web PWA | Weeks 23–28 | React, Service Worker | Post-launch | Responsive design; offline support |
+| **4** | iOS / Android | Weeks 29+ | Swift / Kotlin | Optional | Secondary; sync with desktop via cloud |
 
 ---
 
@@ -180,7 +180,7 @@ Windows Client ┤
 
 ---
 
-## Sample Feature Roadmap (24 weeks to Tier 3)
+## Sample Feature Roadmap (28 weeks to Tier 3)
 
 ### Tier 1 (Weeks 1–12): Native Desktop + Backend Infrastructure
 - macOS app (Swift + SwiftUI) OR Windows app (C# + .NET MAUI)
@@ -192,17 +192,17 @@ Windows Client ┤
 - (Parallel, Weeks 8–12) Backend API (Node/Python/Go)
 - (Parallel, Weeks 8–12) Cloud storage (S3 or GCS), Document sync, Settings sync
 
-### Tier 2 (Weeks 13–18): Web Dashboard
+### Tier 2 (Weeks 17–22, after the Weeks 13–16 measurement window): Web Dashboard
 - Web app (Next.js + React) for cloud access
 - Settings management
 - Team management (if team features)
 - Billing dashboard
 
-### Tier 3 (Weeks 19–24): Mobile PWA
+### Tier 3 (Weeks 23–28): Mobile PWA
 - Mobile web PWA (responsive, offline)
 - Sync with desktop data
 
-### Tier 4 (Weeks 25+): Mobile Native (optional)
+### Tier 4 (Weeks 29+): Mobile Native (optional)
 - iOS/Android native apps (optional; sync with desktop)
 
 ---
@@ -276,4 +276,4 @@ Windows Client ┤
 | **Minimum supported versions** | Support current and previous macOS/Windows versions; state the policy on the download page |
 | **License & sync API** | Version the license-check and sync APIs; offline-cached licenses must keep working after server changes |
 | **Rollback** | Keep the previous build downloadable; auto-updater must be able to roll back a bad release |
-| **Tier gate** | Start the web dashboard when active paid users ask for cross-device access, not on a date |
+| **Tier gate** | Start Tier 2 after the ~4-week measurement window, once paid conversion and crash targets (set in Step 4) are met and paid users ask for cross-device access — not on a date |

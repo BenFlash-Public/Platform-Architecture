@@ -7,11 +7,11 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 
 **Best for:** Productivity tools, developer utilities, security/privacy tools, content enhancers, form fillers, note-takers, password managers, ad blockers—anything that extends browser functionality and reaches users where they spend time: in the browser.
 
-**Platform sequence:** Chrome Web Store (Tier 1) → Firefox Add-ons + Safari Extensions + Edge Add-ons (Tier 2, parallel) → Web dashboard (Tier 3, optional) → Electron wrapper (Tier 4, optional)
+**Platform sequence:** Chrome Web Store (Tier 1) → Firefox Add-ons + Safari Extensions + Edge Add-ons (Tier 2, built in parallel with each other after Chrome launch) → Web dashboard (Tier 3, optional) → Electron wrapper (Tier 4, optional)
 
 **Last verified:** 2026-09-27 (Manifest V3 requirements, Chrome Web Store policies, Firefox/Safari/Edge extension APIs)
 
-**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+**Timeline assumption:** Week ranges assume ~2 full-time engineers. Rows marked "Parallel" are Tier 1 launch tracks: they ship with the launch, need a second engineer, and have no metric gate. Tier 2+ rows are post-launch: each starts after the previous tier ships plus a ~4-week measurement window for its metric gate. Scale per SKILL.md Step 4.
 
 ---
 
@@ -20,11 +20,11 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 | Tier | Platform | Timeline | Tech Stack | Status | Notes |
 |------|----------|----------|-----------|--------|-------|
 | **1** | Chrome Extension | Weeks 1–8 | Manifest V3, TypeScript, React/Vue | Critical path | Largest user base; Web Store review 1–3 days |
-| **2** | Firefox Add-on | Weeks 7–10 | Same codebase; Manifest V2/V3 compat | Parallel | Second-largest; review 1–5 days |
-| **2** | Safari App Extension | Weeks 7–10 | Same codebase; Safari Web Extension API | Parallel | Growing user base; notarization required |
-| **2** | Edge Add-on | Weeks 7–10 | Same codebase; Chromium-compatible | Parallel | Chromium-based; reuses Chrome build |
-| **3** | Web Dashboard | Weeks 11–16 | Next.js, React, TypeScript | Post-launch | User settings, sync, license management, analytics |
-| **4** | Electron Wrapper | Weeks 17+ | Electron, same React UI | Optional | Standalone app; not typical for extensions |
+| **2** | Firefox Add-on | Weeks 13–16 | Same codebase; Manifest V3 (check Firefox differences) | Post-launch (gated) | Second-largest; review 1–5 days |
+| **2** | Safari Web Extension | Weeks 13–16 | Same codebase; Safari Web Extension API | Post-launch (gated) | Needs an Xcode app wrapper, Apple Developer Program membership, and App Store distribution |
+| **2** | Edge Add-on | Weeks 13–16 | Same codebase; Chromium-compatible | Post-launch (gated) | Chromium-based; reuses Chrome build |
+| **3** | Web Dashboard | Weeks 17–22 | Next.js, React, TypeScript | Post-launch | User settings, sync, license management, analytics |
+| **4** | Electron Wrapper | Weeks 23+ | Electron, same React UI | Optional | Standalone app; not typical for extensions |
 
 ---
 
@@ -242,7 +242,7 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 
 ---
 
-## Sample Feature Roadmap (16 weeks to Tier 3)
+## Sample Feature Roadmap (22 weeks to Tier 3)
 
 ### Tier 1 (Weeks 1–8): Chrome MVP
 - Core feature (e.g., content enhancement, data entry)
@@ -252,14 +252,14 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 - Basic analytics
 - Chrome Web Store submission + approval
 
-### Tier 2 (Weeks 7–10): Multi-Browser Launch (parallel)
+### Tier 2 (Weeks 13–16, after the Weeks 9–12 measurement window): Multi-Browser Launch
 - Firefox Add-on (same codebase, Manifest V2 compat layer)
 - Safari App Extension (Web Extension API)
 - Edge Add-on (reuse Chrome build; Chromium-compatible)
 - Cross-browser testing framework
 - Store submissions for all platforms
 
-### Tier 3 (Weeks 11–16): Cloud Sync & Premium
+### Tier 3 (Weeks 17–22): Cloud Sync & Premium
 - Backend API (Node/Python) for user settings sync
 - `chrome.storage.sync` integration
 - Premium tier (subscription or one-time)
@@ -329,4 +329,4 @@ description: For browser extensions, web plugins, and cross-browser tools. Ship 
 | **Browser changes** | Track Chrome/Firefox/Safari release notes for Manifest V3 and API changes each release cycle |
 | **Backend API versioning** | Old extension versions linger; version the sync/license API and never break a shipped contract |
 | **Permissions** | Any new permission triggers a user re-consent prompt — plan permission changes carefully |
-| **Tier gate** | Start multi-browser launch when Chrome retention and review score targets are met |
+| **Tier gate** | Start Tier 2 after the ~4-week measurement window, once Chrome D14 retention and review-score targets (set in Step 4) are met — not on a date |

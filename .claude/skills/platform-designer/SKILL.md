@@ -28,14 +28,21 @@ Analyze for:
 - **App type:** B2B SaaS, consumer app, developer tool, other
 - **Complexity level:** Simple (MVP in 1-2 platforms), moderate (3-4 platforms), complex (5+, real-time sync, offline)
 - **What's missing:** Revenue model? Timeline? Technical constraints?
-- **Risk signals:** Regulated data (health, finance, legal, children, payments)? AI/LLM features? Paired hardware (wearable, BLE device)? Existing code, backend, or audience?
+- **Risk signals:** Regulated data (health, mental health, finance, legal, children, payments)? AI/LLM features? Paired hardware (wearable, BLE device)? Existing code, backend, or audience?
 
 ## Step 2: Adaptive Interview
 
-Ask only the questions that unlock the next decision. Don't ask all 9 — ask the ones that matter. Question 7 (data sensitivity) is the exception: never skip it when Step 1 found a regulated-data signal.
+Ask only the questions that unlock the next decision. **Ask at most 3 questions per turn** — pick the 3 that change the recommendation most. Question 7 (data sensitivity) is always one of them when Step 1 found a regulated-data signal.
 
-**ISOLATION FALLBACK:** If running in a non-interactive context (agent, batch, no follow-up interaction expected), skip Step 2 and proceed directly to Step 3 using inferred answers from the intake. Infer conservatively and record every inferred answer in the Assumptions → Decisions table (see Output Format). Conservative defaults:
-- Team: solo developer, part-time budget (scale timelines per Step 4)
+**If you ask questions, stop after the questions.** Don't also produce a partial plan. You may offer one line: "Or say 'go' and I'll proceed on these defaults: …" listing the isolation defaults below.
+
+**ISOLATION FALLBACK:** Skip Step 2 and go straight to Step 3 when **any** of these is true:
+- The user says not to ask questions, or asks for the plan directly ("just give me the plan", "run without asking", "go")
+- You are running as a subagent, batch job, scheduled task, or eval, where no reply can come back
+- The prompt already includes answers to the interview (use them; infer only what's missing)
+
+Otherwise, ask (up to 3 questions) and stop. When you skip, infer conservatively and record every inferred answer in the Assumptions → Decisions table (see Output Format), labelled "Inferred". Conservative defaults:
+- Team: **solo developer working part-time** (~20 hrs/week) — unless the prompt states otherwise. Never assume a larger team than stated, and never scale template timelines *down* for an unknown team
 - Revenue: freemium
 - Users: mobile-first for consumer apps, web-first for B2B
 - Data: if any health, finance, legal, children, or payment signal appears, treat the data as regulated
@@ -72,11 +79,11 @@ Ask only the questions that unlock the next decision. Don't ask all 9 — ask th
    - Informs: on-device vs cloud inference, per-user inference cost (must fit the revenue model), streaming UI, where prompts and user data are sent (feeds Q7)
 
 **Adaptive branching:**
-- If the app is clearly B2B SaaS (CRM, project tool, data dashboard), skip #1 (desktop web is obvious) and focus on #2, #3, #5, #7.
+- If the app is clearly B2B SaaS (CRM, project tool, data dashboard), skip #1 (desktop web is obvious) and ask #2, #5, #7.
 - If they say "mobile users first," focus on the mobile-first template and ask #2, #4, #5.
-- If Step 1 found regulated data, AI features, paired hardware, or existing code, ask #7, #9, or #8 respectively even if nothing else is asked.
-- If they're unsure about everything, ask all 9 to build context.
-- **If running in isolation** (can't get responses), infer answers from context and skip to Step 3.
+- If Step 1 found regulated data, AI features, paired hardware, or existing code, #7, #9, or #8 take priority for the 3 slots.
+- If they're unsure about everything, ask the 3 most important now and the rest in the next turn — never all 9 at once.
+- **If the isolation fallback applies**, infer answers and skip to Step 3.
 
 ## Step 3: Recommend
 
@@ -131,26 +138,48 @@ Before writing, **read the recommended template file** (and the second one for a
 
 Then complete the template with the user's app details at the appropriate detail level.
 
-**Scale the timeline to the team.** Template timelines assume about 2 full-time engineers (rows marked "Parallel" require at least 2). Adjust and state the adjustment:
-- Solo or part-time: run "Parallel" rows one after another and stretch estimates (roughly 1.5–2x for solo full-time; more for part-time). This is a heuristic — label it as one.
-- Larger team: parallel rows can overlap more, but App Store/Play review and beta periods don't shrink.
+**Scale the timeline to the team.** Template timelines assume about 2 full-time engineers. Adjust, state the adjustment, and apply it to the actual week numbers in the plan — not just the assumptions table:
+- Solo full-time: run "Parallel" launch tracks one after another; roughly 1.5–2x.
+- Solo part-time (the isolation default): roughly 3x.
+- Unknown team: use the isolation default. Never scale timelines down unless the user states a larger team.
+- Larger team: launch tracks can overlap more, but App Store/Play review, beta periods, and measurement windows don't shrink.
+- These multipliers are heuristics — label them as such.
+- Do the arithmetic and check it: each scaled row's week span must equal its base duration × the multiplier you state. If you round or adjust, say so.
 
-**Gate tiers on metrics, not dates.** For each tier transition, name the metric that should be met first (e.g., "start Tier 2 when D30 retention ≥ X% and crash-free sessions ≥ 99%"). Let the user set X; suggest a starting value and say it's a starting point.
+**Label every number where it appears.** Week ranges, thresholds (crash-free %, pairing success %, retention %), prices, and code-share figures each need a visible label: "estimate", "suggested starting value", "heuristic", or a cited source. One footnote under the platform table ("All week ranges are estimates, scaled ~3x from the template's 2-engineer baseline") covers the table; write "suggested" next to each gate threshold. This includes every threshold you carry over from a template's release gates (launch time, p95 latency, reconnect time, crash-free %, battery drain) — the template numbers are starting points, not facts. An unlabelled number reads as a fact.
 
-**Check volatile facts.** Store fees, target API levels, Manifest V3 rules, and payment-link rules change. If a template's **Last verified** date is more than 6 months old, or you're quoting a fee or policy number, verify it against current official documentation first (use a docs lookup tool if available) and cite the source. If you can't verify, say so.
+**Tier 1 launch tracks vs post-launch tiers.** Anything built in parallel with Tier 1 is a **Tier 1 launch track**: it ships with the launch, needs its own engineer, and has no metric gate. Every **Tier 2+** tier is post-launch: it starts only after the previous tier has shipped *and* its metric gate is met. That means a measurement window (plan ~4 weeks) between launch and the next tier. Check before output: no Tier 2+ row may start before the previous tier's launch week plus its measurement window.
+
+**Gate tiers on metrics, not dates.** For each post-launch tier transition, name the metric that should be met first, and pick metrics that can be measured inside the window (e.g., "start Tier 2 when D14 retention ≥ X% and crash-free sessions ≥ 99%" — D30 needs a window longer than 30 days). Let the user set X; suggest a starting value and say it's a starting point. **Every post-launch tier gets its own gate, not just Tier 2:** in the platform table, each Tier 2+ row states when it starts — the measurement window after the previous tier ships and the metric that must be met (e.g., "Weeks 45–52, after a 4-week window; start when mobile-web DAU share ≥ X%"). Optional or undecided tiers still name the metric that would trigger them. **Do not list retention or engagement metrics as Tier 1 release gates**—those are measured post-launch. Tier 1 gates cover functionality, stability (crash-free sessions), compliance, and performance (load times, API response times). Retention gates apply only to *transitions between tiers* after the product ships.
+
+**Check volatile facts.** Store fees, target API levels, Manifest V3 rules, payment-link rules, and AI model names change. If a template's **Last verified** date is more than 6 months old, or you're quoting a fee or policy number, verify it against current official documentation first (use a docs lookup tool if available) and cite the source. If you can't verify, say so.
+- **AI models:** don't name a specific model version from memory. Check the provider's current model list, or name only the provider and capability tier ("a current mid-size model from provider X"). Also consider built-in on-device options (e.g., browser or OS AI APIs) before assuming cloud inference.
+
+**Verified-vendor rule.** Never state that a named vendor signs a BAA, is HIPAA-eligible, SOC 2 attested, PCI compliant, or GDPR-ready unless you checked that vendor's current documentation in this session and cite it. Otherwise write "confirm [capability] with the vendor, on the plan tier you'll use". There is no "HIPAA certification" — never claim one.
+
+**Platform consistency.** Tools, services, and store names must match the platform they appear under — e.g., Android plans use detekt/ktlint, Play Console testing tracks, Health Connect, Wear OS; iOS plans use SwiftLint, TestFlight, HealthKit, watchOS. Each platform appears in exactly one tier, and table weeks, roadmap weeks, and gates must agree. Before output, re-read the plan for copy errors from another platform or another scenario, and for statements that contradict each other (e.g., "data not stored" next to a 90-day retention).
+
+**No cross-user caches.** Caches of user-supplied, private, or paywalled content must be keyed per user or per tenant. A shared cache (e.g., by URL) can serve one user's content to another.
 
 **Compliance Overlay** (apply when Q7 flags regulated data; this is architecture guidance, not legal advice — tell the user to confirm with counsel):
 
 | Data / market | Architecture impact |
 |---|---|
-| Health data, US (HIPAA covered entity or business associate) | Every vendor that touches PHI must sign a BAA — confirm per vendor and per plan tier before choosing hosting, database, analytics, email, and LLM providers; audit logs; encryption at rest and in transit |
+| Health data, US (HIPAA covered entity or business associate) | Every vendor that touches PHI must sign a BAA — confirm per vendor and per plan tier (verified-vendor rule) before choosing hosting, database, analytics, email, and LLM providers; audit logs; encryption at rest and in transit |
+| Selling to HIPAA covered entities (clinics, therapists, health plans) | Your company is likely their **business associate**: you sign BAAs *with your customers*, and the HIPAA row above applies to your whole stack |
+| Consumer health data, US (not covered by HIPAA, e.g., fitness/wellness apps) | FTC Health Breach Notification Rule: after a breach, notify affected users, the FTC, and (for 500+ residents of a state) the media. Plan breach detection, encryption, and access logging. No BAA involved |
+| Mental health, crisis-adjacent, or peer-support features | **Tier 1 gate — crisis protocol:** in-product route to local crisis lines (US: 988), clear "not for emergencies" notice, escalation policy for staff/providers, stated response-time expectations |
 | EU/UK users (GDPR) | Data export and deletion flows, consent records, data-processing agreements, region choice for storage |
-| Payment cards (PCI DSS) | Use hosted payment pages/elements so card data never touches your servers |
+| India users (Digital Personal Data Protection Act, 2023) | Consent notices, user rights (access, correction, erasure), breach notification; rules are being phased in — verify current obligations and deadlines |
+| Any other market | Check the local privacy law for each target country before launch; if you can't identify it, say so in the plan |
+| Payment cards (PCI DSS) | Use hosted payment pages or payment elements (Stripe, Square, etc.) so card data never touches your servers. SAQ A (PCI SSC self-assessment) applies when payment fields are fully hosted by the provider — confirm the right SAQ with your processor. |
 | Children (COPPA and similar) | Parental consent, minimal data collection, restricted ad and analytics SDKs |
-| B2B selling to enterprises (SOC 2) | Audit logging from day 1, SSO/SAML on the roadmap, access reviews |
+| B2B selling to enterprises (SOC 2) | Audit logging from day 1, SSO/SAML on the roadmap, access reviews. A SOC 2 report comes from an independent CPA audit, not a legal sign-off |
 | Financial or legal records | Retention rules, audit trails, stricter access control |
+| Deletion requests vs record retention | Records a business or provider must legally keep (medical, financial, tax) can't simply be purged on request. Design a restricted/archived state with a documented retention schedule, and confirm with counsel |
+| Regulated physical goods (food, alcohol) in marketplace | Check cottage food laws (US: state-by-state), licensing requirements for alcohol sales, and age verification. These are launch blockers for some states/countries. |
 
-Add the relevant rows to the Tier 1 release gates.
+Add the relevant rows to the Tier 1 release gates. **Apply each row in full, not in summary:** every requirement in an applied row becomes its own gate item (e.g., the FTC row means notifying users, the FTC, and the media where required — not just "a breach plan"; the business-associate row means stating that you'll sign BAAs with your customers). If health, financial, or legal records are involved, also apply the deletion-vs-retention row. Whenever any row applies, end the compliance section with: "Confirm this approach with counsel — this is architecture guidance, not legal advice."
 
 **Detail Level Guidance:**
 - **Medium Detail** (default, unless user asked for "detailed" or "comprehensive" upfront):
@@ -188,7 +217,9 @@ Use the appropriate platform template as the base structure (see Template Refere
 
 At the end, ask:
 
-> "This architecture assumes [your key decision, e.g., 'mobile-first with iOS + web shipping together']. Want to explore alternatives? For example, what if you went [Android-first / desktop-first / web-only]? I can show you the tradeoffs side-by-side."
+> "This architecture assumes [your key decision, e.g., 'mobile-first with iOS + web shipping together']. Want to explore alternatives? For example, what if you went [alternative 1] or [alternative 2]? I can show you the tradeoffs side-by-side."
+
+Always name **at least 2 specific alternatives** that fit this app (e.g., "Android-first" and "web-only"), not one.
 
 If they say yes, show 2–3 alternative architectures in a **side-by-side comparison table**:
 
@@ -240,10 +271,10 @@ A table with one row per assumption (stated or inferred): the assumption, whethe
 
 | Assumption | Source | Drives |
 |---|---|---|
-| Solo developer, ~20 hrs/week | Inferred | Cross-platform approach; timeline x2 |
+| Solo developer, ~20 hrs/week | Inferred (isolation default) | Cross-platform approach; timeline ~3x (heuristic) |
 
 ### 4. Exploration Question
-Ask if they want to compare alternatives. If yes, show 2–3 side-by-side options. If no, you're done.
+Offer at least 2 named alternatives to compare. If they say yes, show 2–3 side-by-side options. If no, you're done.
 
 ---
 
