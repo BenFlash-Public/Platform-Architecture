@@ -73,7 +73,7 @@ Run from the repository root.
 - **If you hit a limit:**
   - Use `--gen-model sonnet --grader-model sonnet`.
   - Run a few ids at a time (`--ids 1 2 3`).
-  - Keep `--workers` at 1–2.
+  - Keep `--workers` at 1 (the default).
 - **The `notional_cost_usd` numbers in `results.json`** are what the same calls would cost on the API. On a subscription they're not billed; they're just a size gauge.
 
 ## Options
@@ -86,7 +86,7 @@ Run from the repository root.
 | `--gen-model` | CLI default (`api`: `claude-opus-5`) | Model that writes the plans. CLI accepts aliases like `sonnet`, `opus` |
 | `--grader-model` | CLI default (`api`: `claude-opus-5`) | Model that grades |
 | `--effort` | CLI default (`api`: `high`) | Generator effort level |
-| `--workers` | 2 (`api`: 4) | Parallel jobs; lower it if you hit limits |
+| `--workers` | 1 (`api`: 4) | Parallel jobs. The CLI backend runs one at a time by default to stay under subscription rate limits |
 | `--no-baseline` | off | Skip the no-skill baseline |
 | `--dry-run` | off | Write prompts only; no model calls |
 

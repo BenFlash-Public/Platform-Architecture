@@ -334,7 +334,7 @@ def main() -> None:
     p.add_argument("--grader-model", help="same defaults as --gen-model")
     p.add_argument("--effort", choices=["low", "medium", "high", "xhigh", "max"],
                    help="generator effort (default: CLI default for cli, high for api)")
-    p.add_argument("--workers", type=int, help="parallel jobs (default: 2 for cli, 4 for api)")
+    p.add_argument("--workers", type=int, help="parallel jobs (default: 1 for cli, 4 for api)")
     p.add_argument("--no-baseline", action="store_true", help="skip the no-skill baseline")
     p.add_argument("--dry-run", action="store_true", help="write the prompts that would be sent; call no API")
     args = p.parse_args()
@@ -342,7 +342,7 @@ def main() -> None:
         args.gen_model = args.gen_model or "claude-opus-5"
         args.grader_model = args.grader_model or "claude-opus-5"
         args.effort = args.effort or "high"
-    args.workers = args.workers or (2 if args.backend == "cli" else 4)
+    args.workers = args.workers or (1 if args.backend == "cli" else 4)
 
     data = json.loads(EVALS_FILE.read_text())
     evals = [e for e in data["evals"] if not args.ids or e["id"] in args.ids]
