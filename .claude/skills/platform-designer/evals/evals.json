@@ -290,7 +290,7 @@
       "assertions": [
         {
           "id": "out_of_scope_stated",
-          "kind": "substance",
+          "kind": "format",
           "check": "States that games are outside this skill's templates."
         },
         {
