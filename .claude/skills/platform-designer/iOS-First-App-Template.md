@@ -11,7 +11,7 @@ description: For premium consumer apps requiring deep OS integration (HealthKit,
 
 **Last verified:** 2026-09-27 (HealthKit SDK, App Store commission rates, StoreKit 2, iOS minimum version support)
 
-**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+**Timeline assumption:** Week ranges assume ~2 full-time engineers. Rows marked "Parallel" are Tier 1 launch tracks: they ship with the launch, need a second engineer, and have no metric gate. Tier 2+ rows are post-launch: each starts after the previous tier ships plus a ~4-week measurement window for its metric gate. Scale per SKILL.md Step 4.
 
 ---
 
@@ -20,10 +20,10 @@ description: For premium consumer apps requiring deep OS integration (HealthKit,
 | Tier | Platform | Timeline | Tech Stack | Status | Notes |
 |------|----------|----------|-----------|--------|-------|
 | **1** | iOS (native) | Weeks 1–10 | Swift, SwiftUI, Core Data / Realm | Critical path | HealthKit, notifications, cameras; App Store launch |
-| **2** | Mobile Web PWA | Weeks 8–12 | React, TypeScript, IndexedDB | Parallel | Web fallback; user acquisition; zero-install trial |
-| **3** | Web Dashboard | Weeks 13–18 | Next.js, React, Tailwind | Post-launch | Analytics, insights, admin; desktop users |
-| **4** | Android native | Weeks 19–30 | Kotlin, Jetpack Compose, Room | Post-launch | Leverage iOS learnings; Play Store positioning |
-| **5** | watchOS / Apple TV | Weeks 31+ | SwiftUI, HealthKit Watch | Optional | Companion app; fitness tracking on wrist |
+| **2** | Mobile Web PWA | Weeks 15–19 | React, TypeScript, IndexedDB | Post-launch (gated) | Web fallback; user acquisition; zero-install trial. Weeks 11–14: measurement window |
+| **3** | Web Dashboard | Weeks 20–25 | Next.js, React, Tailwind | Post-launch | Analytics, insights, admin; desktop users |
+| **4** | Android native | Weeks 26–37 | Kotlin, Jetpack Compose, Room | Post-launch | Leverage iOS learnings; Play Store positioning |
+| **5** | watchOS / Apple TV | Weeks 38+ | SwiftUI, HealthKit Watch | Optional | Companion app; fitness tracking on wrist |
 
 ---
 
@@ -188,7 +188,7 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 
 ---
 
-## Sample Feature Roadmap (30 weeks to Tier 4)
+## Sample Feature Roadmap (37 weeks to Tier 4)
 
 ### Tier 1 (Weeks 1–10): iOS MVP
 - Auth (email/password, Apple Sign-In)
@@ -198,19 +198,19 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 - In-app purchase (freemium paywall)
 - iOS app to App Store
 
-### Tier 2 (Weeks 8–12): Mobile Web PWA
+### Tier 2 (Weeks 15–19, after the Weeks 11–14 measurement window): Mobile Web PWA
 - Mobile web PWA (responsive, offline)
 - Email invite system
 - Basic sharing (view-only)
 
-### Tier 3 (Weeks 13–18): Web Dashboard + Retention
+### Tier 3 (Weeks 20–25): Web Dashboard + Retention
 - Web dashboard (analytics, insights)
 - Push notifications (workouts, milestones)
 - Social features (friends, leaderboards)
 - Advanced analytics dashboard (charting)
 - Premium tier features (custom workouts, coaching)
 
-### Tier 4 (Weeks 19–30): Android
+### Tier 4 (Weeks 26–37): Android
 - Native Android app (Kotlin + Jetpack Compose)
 - Sync data across iOS + Android + web
 - watchOS companion app (quick log, wrist display)
@@ -226,7 +226,7 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 | **Background task crashes** | Silent failures; user doesn't know | Test background sync extensively; error logging mandatory |
 | **Memory leaks in notifications** | App crashes after 100 notifications | Use Instruments (Allocations + Address Sanitizer); review retain cycles |
 | **Battery drain from location** | Users uninstall; 1-star reviews | Use significant location updates, not continuous; add battery warning |
-| **Building web too late** | Growth plateau without web option | Start web in parallel (Tier 2); PWA ready by week 12 |
+| **Building web too late** | Growth plateau without web option | Make the PWA the first post-launch tier, or pull it into Tier 1 as a launch track if you have a second engineer |
 | **Ignoring Android until Tier 4** | Data sync issues between iOS/Android | Design sync protocol now; test with both platforms early |
 | **App Store rejection** | Delays launch 1–2 weeks | Review guidelines early (privacy labels, per-storefront payment-link rules) |
 
@@ -265,4 +265,4 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 | **Minimum supported versions** | Current iOS and previous major; server-driven force-update check before launch |
 | **API versioning** | `/v1` from day 1; Android (Tier 4) and web must speak the same contract — never break shipped clients |
 | **HealthKit / sensitive data** | Re-review privacy labels and permission copy on every release that touches new data types |
-| **Tier gate** | Start Tier 2 when retention and crash-free targets are met, not on a date |
+| **Tier gate** | Start Tier 2 after the ~4-week measurement window, once D14 retention and crash-free targets (set in Step 4) are met — not on a date. Want it sooner? With a second engineer, pull it into Tier 1 as a parallel launch track (it then ships with launch and skips the gate). |

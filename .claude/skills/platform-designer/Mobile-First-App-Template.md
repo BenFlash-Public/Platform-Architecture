@@ -11,7 +11,7 @@ description: For consumer/prosumer apps where users access primarily via mobile 
 
 **Last verified:** 2026-09-27 (App Store commission rates, iOS/Android API levels, StoreKit 2 support)
 
-**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+**Timeline assumption:** Week ranges assume ~2 full-time engineers. Rows marked "Parallel" are Tier 1 launch tracks: they ship with the launch, need a second engineer, and have no metric gate. Tier 2+ rows are post-launch: each starts after the previous tier ships plus a ~4-week measurement window for its metric gate. Scale per SKILL.md Step 4.
 
 ---
 
@@ -21,8 +21,8 @@ description: For consumer/prosumer apps where users access primarily via mobile 
 |------|----------|----------|-----------|--------|-------|
 | **1** | iOS (native) | Weeks 1–6 | Swift, SwiftUI, Core Data / Realm | Critical path | Launch cohort; App Store positioning |
 | **1** | Mobile Web (PWA) | Weeks 4–7 | React, TypeScript, IndexedDB | Parallel | Zero-install trial; instant updates |
-| **2** | Desktop Web | Weeks 8–14 | React, Electron (optional) | After MVP | Dashboard view; bulk operations |
-| **3** | Android (native) | Weeks 15–24 | Kotlin, Jetpack Compose | Post-launch | Leverage iOS codebase learnings |
+| **2** | Desktop Web | Weeks 12–18 | React, Electron (optional) | Post-launch (gated) | Dashboard view; bulk operations |
+| **3** | Android (native) | Weeks 19–28 | Kotlin, Jetpack Compose | Post-launch | Leverage iOS codebase learnings |
 | **4** | watchOS / TV | TBD | SwiftUI | Optional | Native OS integrations if relevant |
 
 ---
@@ -162,7 +162,7 @@ Android ─────┘                 ├──> Message Queue (for offline
 
 ---
 
-## Sample Feature Roadmap (24 weeks to Tier 3)
+## Sample Feature Roadmap (28 weeks to Tier 3)
 
 ### Tier 1 (Weeks 1–7): iOS + Mobile Web MVP
 - Auth (email/password, OAuth)
@@ -172,12 +172,12 @@ Android ─────┘                 ├──> Message Queue (for offline
 - Web PWA launch
 - Freemium paywall (Pro subscription $4.99/mo)
 
-### Tier 2 (Weeks 8–14): Desktop Web Growth & Retention
+### Tier 2 (Weeks 12–18, after the Weeks 8–11 measurement window): Desktop Web Growth & Retention
 - Desktop web dashboard (if applicable)
 - Notifications (reminders, social engagement)
 - Basic analytics (user cohorts, feature usage)
 
-### Tier 3 (Weeks 15–24): Android + Scale & Monetization
+### Tier 3 (Weeks 19–28): Android + Scale & Monetization
 - Android native app (leverage iOS learnings)
 - Advanced features (depending on app type)
 - Community/social features
@@ -224,4 +224,4 @@ Android ─────┘                 ├──> Message Queue (for offline
 | **Minimum supported versions** | Support current iOS and the previous major version; add a server-driven force-update check before Tier 1 ships so old clients can be retired |
 | **API versioning** | Version the API (`/v1`) from day 1; old app builds stay in the wild for months, so never break a shipped contract — add fields, don't rename them |
 | **Support & incidents** | Crash-free sessions ≥ 99% as the alert threshold; critical fixes via expedited App Review when needed |
-| **Tier gate** | Start Tier 2 when D30 retention and conversion meet the targets set in Step 4, not on a date |
+| **Tier gate** | Start Tier 2 after the ~4-week measurement window, once D14 retention and conversion meet the targets set in Step 4 — not on a date |

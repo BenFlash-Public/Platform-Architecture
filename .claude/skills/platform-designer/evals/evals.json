@@ -1,131 +1,315 @@
 {
   "skill_name": "platform-designer",
+  "notes": "Each eval runs with the skill and without it (baseline). A separate grader sees only the output and the assertions. 'common_assertions' apply to every eval unless skip_common is true. kind=format checks the skill's output shape (baselines are expected to miss these); kind=substance checks correctness and safety.",
+  "common_assertions": [
+    {
+      "id": "plan_produced",
+      "kind": "format",
+      "check": "The output is a complete plan. It does not stop at interview questions or ask the user to answer before giving the plan."
+    },
+    {
+      "id": "assumptions_table_with_source",
+      "kind": "format",
+      "check": "Has an Assumptions → Decisions table; every row says whether the assumption was stated by the user or inferred."
+    },
+    {
+      "id": "exploration_question_present",
+      "kind": "format",
+      "check": "Ends by offering 2–3 alternative architectures to compare."
+    },
+    {
+      "id": "no_unsourced_numbers",
+      "kind": "substance",
+      "check": "Every number (percentages, prices, week counts, thresholds, market shares) either comes from the user's prompt, is cited to a source, or is explicitly labelled as a suggested starting value, estimate, or heuristic. Unlabelled invented figures fail."
+    },
+    {
+      "id": "no_unverified_vendor_claims",
+      "kind": "substance",
+      "check": "Does not state that a named vendor signs a BAA, is HIPAA-eligible, SOC 2 attested, or PCI compliant without citing that vendor's documentation, and never claims a 'HIPAA certification'. Generic advice ('confirm a BAA with each vendor') passes. N/A if no such claims are needed."
+    },
+    {
+      "id": "no_internal_contradictions",
+      "kind": "substance",
+      "check": "No two statements in the output contradict each other (e.g., 'data not stored' vs a retention period; a platform placed in two different tiers; an assumption that doesn't match the plan's numbers)."
+    },
+    {
+      "id": "tier_timeline_consistent",
+      "kind": "substance",
+      "check": "Each platform appears in exactly one tier. Anything built in parallel with Tier 1 is presented as a Tier 1 launch track. Every Tier 2+ tier starts after the previous tier ships plus a measurement window, and its metric gate can actually be measured inside that window."
+    },
+    {
+      "id": "tier_1_gates_exclude_retention",
+      "kind": "substance",
+      "check": "Tier 1 release gates contain no retention or engagement targets (those only gate later tiers)."
+    },
+    {
+      "id": "platform_consistency",
+      "kind": "substance",
+      "check": "Tools, services, and store names match their platform (e.g., no SwiftLint/TestFlight/watchOS in an Android plan; no Play Console in an iOS plan) and nothing is carried over from an unrelated scenario."
+    },
+    {
+      "id": "volatile_facts_current_or_flagged",
+      "kind": "substance",
+      "check": "Store policies, API levels, and AI model names are current as of the run date, cited, or explicitly flagged as needing verification. No outdated model names presented as current."
+    },
+    {
+      "id": "isolation_solo_default",
+      "kind": "substance",
+      "check": "If the prompt does not state team size: assumes a solo developer working part-time, labels it Inferred, and scales timelines UP accordingly (in the actual week numbers). Never assumes a larger team and never scales down. N/A if the prompt states team size."
+    }
+  ],
   "evals": [
     {
       "id": 1,
-      "prompt": "I want to build a CRM for small real-estate teams. Agents manage leads, brokers see pipeline reports. What platforms should I build first?",
-      "expected_output": "Recommends Web-First template. Asks adaptive questions or assumes team size + SOC 2 needs. Includes Assumptions → Decisions table with every assumption stated (asked or inferred). Metric gate for Tier 2 transition (e.g., D30 retention, crash-free sessions). Offers exploration question at end. No unsourced numbers.",
-      "rules": [
-        "template_choice: Web-First",
-        "assumptions_table_present: true",
-        "exploration_question_present: true",
-        "tier_1_gates_exclude_retention: true",
-        "no_unsourced_numbers: true"
+      "mode": "scripted",
+      "prompt": "I want to build a CRM for small real-estate teams. Agents manage leads, brokers see pipeline reports. What platforms should I build first? Answers to your usual questions: 2 full-time engineers (TypeScript/web); per-seat monthly subscription; agents need phone access in the field but always-online is fine; SMB brokerages first, SOC 2 expected in year 2; US only. Don't ask further questions.",
+      "expected_output": "Web-First plan using the stated answers (2 full-time engineers, so no solo scaling). SOC 2 on the roadmap with audit logging from day 1; SOC 2 described as an independent CPA audit. Metric gate for Tier 2 measurable within the window.",
+      "assertions": [
+        {
+          "id": "template_web_first",
+          "kind": "substance",
+          "check": "Recommends the Web-First template."
+        },
+        {
+          "id": "uses_scripted_answers",
+          "kind": "substance",
+          "check": "Uses the answers supplied in the prompt (2 full-time engineers, per-seat subscription, US-only, SOC 2 in year 2) rather than overriding them with defaults."
+        },
+        {
+          "id": "soc2_correctly_described",
+          "kind": "substance",
+          "check": "Treats SOC 2 as an independent CPA audit/attestation, not a legal or counsel sign-off."
+        }
       ],
       "files": []
     },
     {
       "id": 2,
-      "prompt": "Fitness tracking app for gym-goers in India, I'm a solo Kotlin developer. Design the architecture.",
-      "expected_output": "Recommends Android-First template. Scales timeline for solo developer (1.5–2x) and states it explicitly. Uses current API levels (API 36+, minSdk 24, verified against official docs). Includes Assumptions → Decisions table. Offers exploration question. No unsourced percentages.",
-      "rules": [
-        "template_choice: Android-First",
-        "timeline_scaled_for_solo: true",
-        "timeline_scaling_stated: true",
-        "api_levels_current: true",
-        "api_levels_sourced: true",
-        "assumptions_table_present: true",
-        "exploration_question_present: true"
+      "mode": "isolation",
+      "prompt": "Fitness tracking app for gym-goers in India, I'm a solo Kotlin developer. Design the architecture. Don't ask questions; infer anything missing.",
+      "expected_output": "Android-First, native Kotlin. Solo developer stated; hours not stated, so part-time default (~3x) or an explicitly flagged full-time assumption, applied to the week numbers. API 36+ and minSdk 24 with a source. Android-native tooling throughout. India's DPDP Act flagged.",
+      "assertions": [
+        {
+          "id": "template_android_first",
+          "kind": "substance",
+          "check": "Recommends the Android-First template."
+        },
+        {
+          "id": "solo_scaling_applied",
+          "kind": "substance",
+          "check": "Scales the timeline for a solo developer, states the multiplier, and the plan's week numbers actually reflect it. Full-time must be labelled as an inference, not as stated."
+        },
+        {
+          "id": "api_levels_current_sourced",
+          "kind": "substance",
+          "check": "Uses target API 36+ and minSdk 24 (not API 34 or minSdk 21) and cites or links the source."
+        },
+        {
+          "id": "android_native_ecosystem",
+          "kind": "substance",
+          "check": "Uses Android-native tooling and services (e.g., detekt/ktlint, Play Console testing tracks, Health Connect, Wear OS) with no iOS-only items in the Android plan."
+        },
+        {
+          "id": "india_privacy_flagged",
+          "kind": "substance",
+          "check": "Flags India's Digital Personal Data Protection Act (or local privacy law for India) as a compliance item."
+        }
       ],
       "files": []
     },
     {
       "id": 3,
-      "prompt": "I want to build a Chrome extension that summarizes articles with an LLM. Which platforms and architecture?",
-      "expected_output": "Recommends Browser-Extension-First template (not Web-First). Addresses LLM inference placement (cloud vs. on-device) and per-user inference cost impact on revenue model. Mentions Manifest V3. Includes Assumptions → Decisions table. Offers exploration question. No invented percentages.",
-      "rules": [
-        "template_choice: Browser-Extension-First",
-        "not_web_first: true",
-        "ai_inference_placement_addressed: true",
-        "inference_cost_vs_revenue_discussed: true",
-        "manifest_v3_mentioned: true",
-        "assumptions_table_present: true",
-        "exploration_question_present: true"
+      "mode": "isolation",
+      "prompt": "I want to build a Chrome extension that summarizes articles with an LLM. Which platforms and architecture? Don't ask questions; infer anything missing.",
+      "expected_output": "Browser-Extension-First with Manifest V3. Inference placement compared, including built-in on-device browser AI. Per-user inference cost tied to pricing. No cross-user caches, consistent privacy statements, no model versions from memory, Safari packaging cost noted.",
+      "assertions": [
+        {
+          "id": "template_browser_extension_first",
+          "kind": "substance",
+          "check": "Recommends Browser-Extension-First (not Web-First)."
+        },
+        {
+          "id": "inference_placement_incl_on_device",
+          "kind": "substance",
+          "check": "Compares cloud vs on-device inference, and considers built-in browser/OS AI APIs as an on-device option."
+        },
+        {
+          "id": "inference_cost_vs_revenue",
+          "kind": "substance",
+          "check": "Connects per-user inference cost to the pricing or free-tier limits."
+        },
+        {
+          "id": "manifest_v3",
+          "kind": "substance",
+          "check": "Plans for Manifest V3."
+        },
+        {
+          "id": "no_cross_user_cache",
+          "kind": "substance",
+          "check": "Any cache of article content or summaries is keyed per user (or the output avoids shared caching of user-supplied/paywalled content). N/A if no cache is proposed."
+        },
+        {
+          "id": "safari_packaging_noted",
+          "kind": "substance",
+          "check": "Notes that Safari extensions need an Xcode app wrapper / Apple Developer Program / App Store distribution, or explicitly defers Safari."
+        }
       ],
       "files": []
     },
     {
       "id": 4,
-      "prompt": "Telehealth app where patients message their therapist and log mood daily. Should I go iOS first or web first?",
-      "expected_output": "Flags regulated health data and applies Compliance Overlay: BAA required from every vendor, audit logs, encryption, confirm with counsel. Adds compliance gates to Tier 1 release checklist (not as retention targets). Includes Assumptions → Decisions table. Offers exploration question. Template choice (iOS-First or Web-First) justified by compliance + user needs.",
-      "rules": [
-        "health_data_flagged: true",
-        "compliance_overlay_applied: true",
-        "baa_required_mentioned: true",
-        "audit_logs_required: true",
-        "counsel_confirmation_mentioned: true",
-        "compliance_gates_in_tier_1: true",
-        "no_retention_gates_in_tier_1: true",
-        "assumptions_table_present: true",
-        "exploration_question_present: true"
+      "mode": "isolation",
+      "prompt": "Telehealth app where patients message their therapist and log mood daily. Should I go iOS first or web first? Don't ask questions; infer anything missing.",
+      "expected_output": "Flags PHI and applies the Compliance Overlay without naming unverified BAA vendors. Addresses the business-associate relationship with therapists. Crisis-protocol Tier 1 gate. Deletion vs record retention reconciled. Counsel confirmation.",
+      "assertions": [
+        {
+          "id": "health_data_flagged",
+          "kind": "substance",
+          "check": "Flags regulated health data (PHI/HIPAA)."
+        },
+        {
+          "id": "business_associate_addressed",
+          "kind": "substance",
+          "check": "Addresses that the company is likely a business associate of the therapists/practices and signs BAAs with them."
+        },
+        {
+          "id": "baa_rule_applied",
+          "kind": "substance",
+          "check": "Requires BAAs from every vendor touching PHI without asserting specific vendors are BAA-eligible (unless cited)."
+        },
+        {
+          "id": "crisis_protocol_gate",
+          "kind": "substance",
+          "check": "Includes a Tier 1 crisis-handling gate (e.g., 988 or local crisis line routing, 'not for emergencies' notice, escalation policy)."
+        },
+        {
+          "id": "deletion_vs_retention",
+          "kind": "substance",
+          "check": "Reconciles user deletion requests with medical-record retention obligations instead of promising unconditional purge."
+        },
+        {
+          "id": "counsel_confirmation",
+          "kind": "substance",
+          "check": "Tells the user to confirm the compliance approach with counsel."
+        }
       ],
       "files": []
     },
     {
       "id": 5,
-      "prompt": "Two of us want to ship a habit tracker on iPhone and Android at the same time within 3 months. We both know React. Native or cross-platform?",
-      "expected_output": "Recommends cross-platform (React Native/Expo) with Mobile-First template for sequencing. Explains why (team size + React expertise + timeline). Includes monetization in Tier 1 (not skipped). Metric gates only for tier transitions (D7 retention → Tier 2, not pre-launch). Assumptions → Decisions table present. Offers exploration question (side-by-side comparison). No unsourced code-share percentages. No Flutter claims.",
-      "rules": [
-        "implementation_approach: cross-platform",
-        "template_choice: Mobile-First",
-        "explains_why_cross_platform: true",
-        "monetization_in_tier_1: true",
-        "no_retention_gates_pre_launch: true",
-        "assumptions_table_present: true",
-        "exploration_question_present: true",
-        "no_unsourced_percentages: true",
-        "no_flutter_capability_claims: true"
+      "mode": "isolation",
+      "prompt": "Two of us want to ship a habit tracker on iPhone and Android at the same time within 3 months. We both know React. Native or cross-platform? Don't ask questions; infer anything missing.",
+      "expected_output": "Cross-platform (React Native/Expo) with Mobile-First sequencing, explained by team + skills + timeline. Monetization in Tier 1. No unsourced code-share %. No false Flutter claims.",
+      "assertions": [
+        {
+          "id": "cross_platform_recommended",
+          "kind": "substance",
+          "check": "Recommends a cross-platform implementation (React Native/Expo) and explains why from team size, React skills, and timeline."
+        },
+        {
+          "id": "template_mobile_first_sequencing",
+          "kind": "substance",
+          "check": "Uses Mobile-First (or a named platform-first template) for tier sequencing."
+        },
+        {
+          "id": "monetization_in_tier_1",
+          "kind": "substance",
+          "check": "Includes monetization/paywall in Tier 1."
+        },
+        {
+          "id": "no_false_framework_claims",
+          "kind": "substance",
+          "check": "Makes no false capability claims about Flutter, React Native, or native frameworks (e.g., 'Flutter has no HealthKit support')."
+        }
       ],
       "files": []
     },
     {
       "id": 6,
-      "prompt": "We make a BLE smart ring. Need a companion app that syncs sleep data to the cloud and a dashboard for users. Architecture?",
-      "expected_output": "Uses hardware-companion path: Mobile-First (companion) + Web-First (dashboard) explicitly named. Includes background BLE sync design and firmware OTA flow. Isolation mode: assumes solo developer (not 2-4). Tier 1 includes BLE reliability gates (sync success %, battery impact). Assumptions → Decisions table with every inferred answer. Offers exploration question. No unsourced assumptions.",
-      "rules": [
-        "hardware_companion_pattern: true",
-        "templates_explicitly_named: true",
-        "ble_background_sync_detailed: true",
-        "firmware_ota_flow_included: true",
-        "isolation_mode_solo_developer: true",
-        "ble_gates_in_tier_1: true",
-        "no_retention_gates_in_tier_1: true",
-        "assumptions_table_present: true",
-        "exploration_question_present: true"
+      "mode": "isolation",
+      "prompt": "We make a BLE smart ring. Need a companion app that syncs sleep data to the cloud and a dashboard for users. Architecture? Don't ask questions; infer anything missing.",
+      "expected_output": "Hardware-companion path named explicitly; background BLE and firmware OTA flow; BLE reliability/battery Tier 1 gates; FTC Health Breach Notification Rule for consumer sleep data; solo part-time default.",
+      "assertions": [
+        {
+          "id": "hardware_companion_named",
+          "kind": "substance",
+          "check": "Uses and names the hardware-companion combination (e.g., Mobile-First companion + Web dashboard)."
+        },
+        {
+          "id": "ble_background_and_ota",
+          "kind": "substance",
+          "check": "Covers background BLE sync limits on iOS and Android and a firmware OTA update flow with rollback."
+        },
+        {
+          "id": "ble_tier_1_gates",
+          "kind": "substance",
+          "check": "Tier 1 gates include BLE reliability and battery impact."
+        },
+        {
+          "id": "ftc_hbnr_flagged",
+          "kind": "substance",
+          "check": "Flags the FTC Health Breach Notification Rule (consumer health data not covered by HIPAA), including notifying the FTC."
+        }
       ],
       "files": []
     },
     {
       "id": 7,
+      "mode": "isolation",
       "prompt": "Design the architecture for a marketplace where home cooks sell meals: buyers order on their phones, cooks manage menus and orders on a laptop. Run without asking me questions.",
-      "expected_output": "Runs isolation fallback: no questions asked, skips adaptive interview. Recommends Mobile-First (buyers) + Web-First (cooks) with one backend. Flags PCI DSS with SAQ A (not invented 'SAC'). Flags cottage food laws (state-by-state) as launch blocker. Assumes solo developer (isolation default). Every inferred answer in Assumptions → Decisions table with Source column (Stated vs. Inferred). Offers exploration question. No unsourced commission percentages.",
-      "rules": [
-        "isolation_mode_no_questions: true",
-        "templates_explicitly_combined: true",
-        "pci_dss_flagged: true",
-        "pci_saq_a_mentioned: true",
-        "cottage_food_laws_flagged: true",
-        "isolation_solo_developer_assumed: true",
-        "assumptions_table_complete: true",
-        "assumptions_have_source_column: true",
-        "exploration_question_present: true",
-        "no_unsourced_numbers: true"
+      "expected_output": "No questions. Mobile-First (buyers) + Web-First (cooks) on one backend. PCI via hosted payments with SAQ A. Cottage food laws as a launch blocker. Solo part-time default.",
+      "assertions": [
+        {
+          "id": "no_questions_asked",
+          "kind": "substance",
+          "check": "Asks no questions."
+        },
+        {
+          "id": "templates_combined",
+          "kind": "substance",
+          "check": "Combines Mobile-First (buyers) and Web-First (cooks) on one shared backend and names the combination."
+        },
+        {
+          "id": "pci_saq_a",
+          "kind": "substance",
+          "check": "Uses hosted payment fields and names SAQ A correctly (no invented certifications)."
+        },
+        {
+          "id": "cottage_food_flagged",
+          "kind": "substance",
+          "check": "Flags state cottage food laws (or equivalent local food-sale rules) as a launch blocker."
+        }
       ],
       "files": []
     },
     {
       "id": 8,
-      "prompt": "I'm building a multiplayer mobile game with Unity. What platforms should I launch on?",
-      "expected_output": "States games are explicitly out-of-scope (not force-fit to a template). Explains why (engine lock-in, performance constraints, netcode, store economics differ). Gives general guidance (mobile-first, then PC, then console). Recommends engine-specific resources (Unity docs, Netcode, Steam partner program). No filled-in architecture plan.",
-      "rules": [
-        "out_of_scope_explicitly_stated: true",
-        "no_template_forced: true",
-        "reasons_explained: true",
-        "general_platform_order_given: true",
-        "engine_resources_recommended: true",
-        "unity_documentation_linked: true",
-        "no_filled_in_plan: true"
+      "mode": "isolation",
+      "prompt": "I'm building a multiplayer mobile game with Unity. What platforms should I launch on? Don't ask questions; infer anything missing.",
+      "expected_output": "States games are outside the skill's templates, explains why, gives only general platform-order guidance and engine/store resources; no filled-in plan.",
+      "assertions": [
+        {
+          "id": "out_of_scope_stated",
+          "kind": "substance",
+          "check": "States that games are outside this skill's templates."
+        },
+        {
+          "id": "no_template_forced",
+          "kind": "substance",
+          "check": "Does not produce a filled-in template plan."
+        },
+        {
+          "id": "general_guidance_and_resources",
+          "kind": "substance",
+          "check": "Gives general platform-order guidance and points to engine/store resources."
+        },
+        {
+          "id": "links_plausible",
+          "kind": "substance",
+          "check": "Any documentation URLs look like real official URLs (e.g., docs.unity3d.com). Flag any that look invented; a human should click them."
+        }
       ],
+      "skip_common": true,
       "files": []
     }
   ]

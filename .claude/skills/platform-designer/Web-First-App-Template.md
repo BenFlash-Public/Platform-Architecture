@@ -11,7 +11,7 @@ description: For B2B SaaS, data dashboards, admin tools where desktop web is pri
 
 **Last verified:** 2026-09-27 (App Store commission rates, Play Store requirements, PWA Service Worker support)
 
-**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+**Timeline assumption:** Week ranges assume ~2 full-time engineers. Rows marked "Parallel" are Tier 1 launch tracks: they ship with the launch, need a second engineer, and have no metric gate. Tier 2+ rows are post-launch: each starts after the previous tier ships plus a ~4-week measurement window for its metric gate. Scale per SKILL.md Step 4.
 
 ---
 
@@ -20,10 +20,10 @@ description: For B2B SaaS, data dashboards, admin tools where desktop web is pri
 | Tier | Platform | Timeline | Tech Stack | Status | Notes |
 |------|----------|----------|-----------|--------|-------|
 | **1** | Desktop Web | Weeks 1–6 | Next.js, TypeScript, Tailwind, PostgreSQL | Critical path | Ship immediately; no App Store review; instant updates |
-| **2** | Mobile Web PWA | Weeks 5–8 | React, Service Worker, IndexedDB | Parallel | Responsive design; offline queue; reuse backend |
-| **3** | iOS native | Weeks 9–18 | Swift, SwiftUI, Core Data | Post-launch | App Store presence; premium tier incentive |
-| **4** | Android native | Weeks 19–28 | Kotlin, Jetpack Compose, Room | Post-launch | Leverage iOS codebase learnings; Play Store |
-| **5** | Desktop native (macOS/Windows) | Weeks 29+ | Electron or Tauri (optional) | Optional | Power users; offline-first; advanced sync |
+| **2** | Mobile Web PWA | Weeks 11–14 | React, Service Worker, IndexedDB | Post-launch (gated) | Offline queue; installable; reuse backend. Weeks 7–10: measurement window. (Responsive layout itself ships in Tier 1) |
+| **3** | iOS native | Weeks 15–24 | Swift, SwiftUI, Core Data | Post-launch | App Store presence; premium tier incentive |
+| **4** | Android native | Weeks 25–34 | Kotlin, Jetpack Compose, Room | Post-launch | Leverage iOS codebase learnings; Play Store |
+| **5** | Desktop native (macOS/Windows) | Weeks 35+ | Electron or Tauri (optional) | Optional | Power users; offline-first; advanced sync |
 
 ---
 
@@ -174,7 +174,7 @@ Native Apps ──┘                 └──> WebSocket Server (for real-time
 
 ---
 
-## Sample Feature Roadmap (28 weeks to Tier 4)
+## Sample Feature Roadmap (34 weeks to Tier 4)
 
 ### Tier 1 (Weeks 1–6): Desktop Web MVP
 - Auth (email/password, OAuth)
@@ -184,19 +184,19 @@ Native Apps ──┘                 └──> WebSocket Server (for real-time
 - Desktop web launch
 - Stripe integration for subscription
 
-### Tier 2 (Weeks 5–8 parallel): Mobile Web PWA + Growth
+### Tier 2 (Weeks 11–14, after the Weeks 7–10 measurement window): Mobile Web PWA + Growth
 - Mobile PWA (responsive design)
 - Offline sync (Service Worker + IndexedDB)
 - Push notifications (web push API)
 - Basic analytics dashboard
 
-### Tier 3 (Weeks 9–18): iOS + Retention & Features
+### Tier 3 (Weeks 15–24): iOS + Retention & Features
 - Audit logging (who changed what)
 - Advanced permissions (roles: owner, editor, viewer)
 - Bulk operations (CSV import/export)
 - Native iOS app launch (Code reuse from web backend)
 
-### Tier 4 (Weeks 19–28): Android + Scale
+### Tier 4 (Weeks 25–34): Android + Scale
 - Native Android app
 - Advanced reporting (charts, custom reports)
 - Automation/webhooks (trigger actions on events)
@@ -250,4 +250,4 @@ Native Apps ──┘                 └──> WebSocket Server (for real-time
 | **Database migrations** | Backward-compatible (expand → migrate → contract) so a rollback never needs a restore |
 | **API versioning** | `/v1` from day 1 — native apps (Tiers 3–4) and customer integrations depend on it; publish a deprecation window (e.g., 6–12 months) before removing anything |
 | **Enterprise support** | Status page, incident runbook, and uptime target before selling to larger customers |
-| **Tier gate** | Start native mobile when mobile-web usage and retention justify it, not on a date |
+| **Tier gate** | Start Tier 2 after the ~4-week measurement window, once activation and D14 retention targets (set in Step 4) are met; start native mobile only when mobile-web usage justifies it — not on a date |

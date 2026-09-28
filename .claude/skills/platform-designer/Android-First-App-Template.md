@@ -11,7 +11,7 @@ description: For apps targeting Android-dominant markets (India, SE Asia) or tea
 
 **Last verified:** 2026-09-27 (Play Store target API 36+ requirement, Google Play Billing commission rates, Kotlin/Jetpack support)
 
-**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+**Timeline assumption:** Week ranges assume ~2 full-time engineers. Rows marked "Parallel" are Tier 1 launch tracks: they ship with the launch, need a second engineer, and have no metric gate. Tier 2+ rows are post-launch: each starts after the previous tier ships plus a ~4-week measurement window for its metric gate. Scale per SKILL.md Step 4.
 
 ---
 
@@ -20,10 +20,10 @@ description: For apps targeting Android-dominant markets (India, SE Asia) or tea
 | Tier | Platform | Timeline | Tech Stack | Status | Notes |
 |------|----------|----------|-----------|--------|-------|
 | **1** | Android (native) | Weeks 1–12 | Kotlin, Jetpack Compose, Room | Critical path | Play Store launch; diverse device support |
-| **2** | Mobile Web PWA | Weeks 10–14 | React, TypeScript, IndexedDB | Parallel | Web fallback; user acquisition; zero-install |
-| **3** | Web Dashboard | Weeks 15–20 | Next.js, React, Tailwind | Post-launch | Analytics, admin, insights; desktop users |
-| **4** | iOS native | Weeks 21–32 | Swift, SwiftUI, Core Data | Post-launch | Premium tier; App Store presence |
-| **5** | Wear OS (smartwatch) | Weeks 33+ | Kotlin, Jetpack Compose for Wear | Optional | Companion app; offline functionality |
+| **2** | Mobile Web PWA | Weeks 17–21 | React, TypeScript, IndexedDB | Post-launch (gated) | Web fallback; user acquisition; zero-install. Weeks 13–16: measurement window |
+| **3** | Web Dashboard | Weeks 22–27 | Next.js, React, Tailwind | Post-launch | Analytics, admin, insights; desktop users |
+| **4** | iOS native | Weeks 28–39 | Swift, SwiftUI, Core Data | Post-launch | Premium tier; App Store presence |
+| **5** | Wear OS (smartwatch) | Weeks 40+ | Kotlin, Jetpack Compose for Wear | Optional | Companion app; offline functionality |
 
 ---
 
@@ -176,7 +176,7 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 
 ---
 
-## Sample Feature Roadmap (32 weeks to Tier 4)
+## Sample Feature Roadmap (39 weeks to Tier 4)
 
 ### Tier 1 (Weeks 1–12): Android MVP
 - Auth (email/password, Google Sign-In)
@@ -186,19 +186,19 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 - Push notifications via FCM
 - Play Store launch
 
-### Tier 2 (Weeks 10–14): Mobile Web PWA
+### Tier 2 (Weeks 17–21, after the Weeks 13–16 measurement window): Mobile Web PWA
 - Mobile web PWA (responsive, offline)
 - Email invite system
 - Basic sharing (view/edit permissions)
 
-### Tier 3 (Weeks 15–20): Web Dashboard + Retention
+### Tier 3 (Weeks 22–27): Web Dashboard + Retention
 - Web dashboard (analytics, user management)
 - Advanced notifications (campaigns, reminders)
 - Analytics dashboard (charts, user cohorts)
 - Social features (comments, likes)
 - Premium tier features
 
-### Tier 4 (Weeks 21–32): iOS
+### Tier 4 (Weeks 28–39): iOS
 - Native iOS app (Swift + SwiftUI)
 - Cross-platform sync (Android + iOS + web)
 - Wear OS companion app (smartwatch)
@@ -257,4 +257,4 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 | **Minimum supported versions** | Raise minSdk deliberately and announce it; re-check the Play target API deadline every August |
 | **API versioning** | `/v1` from day 1; old APKs stay installed for months, so never break a shipped contract |
 | **Device coverage** | Keep a low-end, mid-range, and flagship device in the test matrix every release |
-| **Tier gate** | Start Tier 2 when retention and ANR/crash targets are met, not on a date |
+| **Tier gate** | Start Tier 2 after the ~4-week measurement window, once D14 retention and ANR/crash targets (set in Step 4) are met — not on a date. Want it sooner? With a second engineer, pull it into Tier 1 as a parallel launch track (it then ships with launch and skips the gate). |
