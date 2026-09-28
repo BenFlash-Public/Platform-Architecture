@@ -2,7 +2,6 @@
 name: platform-designer
 description: |
   Design scalable platform architecture for any app idea. Use this whenever the user mentions building a new app and needs help deciding which platforms to ship first, tech stack, rollout strategy, or long-term architecture. Triggers on: "design the architecture", "what platforms should I build", "should I go native or cross-platform", "iOS first or web first", or any mention of launching a new product where platform/architecture questions are relevant. Proactively offer this skill when a user describes a new app idea — they almost always need platform guidance to avoid costly rework later.
-compatibility: null
 ---
 
 # Platform Architect

@@ -1,0 +1,14 @@
+{
+  "name": "benflash",
+  "description": "Claude Code skills by Ben Lovett.",
+  "owner": {
+    "name": "Ben Lovett"
+  },
+  "plugins": [
+    {
+      "name": "platform-designer",
+      "source": "./.claude/skills/platform-designer",
+      "description": "Designs a platform architecture for a new app idea: platforms to ship first, native vs cross-platform, gated rollout tiers, and compliance built into the launch checklist."
+    }
+  ]
+}
