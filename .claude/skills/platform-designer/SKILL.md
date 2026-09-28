@@ -144,10 +144,13 @@ Then complete the template with the user's app details at the appropriate detail
 - Unknown team: use the isolation default. Never scale timelines down unless the user states a larger team.
 - Larger team: launch tracks can overlap more, but App Store/Play review, beta periods, and measurement windows don't shrink.
 - These multipliers are heuristics — label them as such.
+- Do the arithmetic and check it: each scaled row's week span must equal its base duration × the multiplier you state. If you round or adjust, say so.
+
+**Label every number where it appears.** Week ranges, thresholds (crash-free %, pairing success %, retention %), prices, and code-share figures each need a visible label: "estimate", "suggested starting value", "heuristic", or a cited source. One footnote under the platform table ("All week ranges are estimates, scaled ~3x from the template's 2-engineer baseline") covers the table; write "suggested" next to each gate threshold. An unlabelled number reads as a fact.
 
 **Tier 1 launch tracks vs post-launch tiers.** Anything built in parallel with Tier 1 is a **Tier 1 launch track**: it ships with the launch, needs its own engineer, and has no metric gate. Every **Tier 2+** tier is post-launch: it starts only after the previous tier has shipped *and* its metric gate is met. That means a measurement window (plan ~4 weeks) between launch and the next tier. Check before output: no Tier 2+ row may start before the previous tier's launch week plus its measurement window.
 
-**Gate tiers on metrics, not dates.** For each post-launch tier transition, name the metric that should be met first, and pick metrics that can be measured inside the window (e.g., "start Tier 2 when D14 retention ≥ X% and crash-free sessions ≥ 99%" — D30 needs a window longer than 30 days). Let the user set X; suggest a starting value and say it's a starting point. **Do not list retention or engagement metrics as Tier 1 release gates**—those are measured post-launch. Tier 1 gates cover functionality, stability (crash-free sessions), compliance, and performance (load times, API response times). Retention gates apply only to *transitions between tiers* after the product ships.
+**Gate tiers on metrics, not dates.** For each post-launch tier transition, name the metric that should be met first, and pick metrics that can be measured inside the window (e.g., "start Tier 2 when D14 retention ≥ X% and crash-free sessions ≥ 99%" — D30 needs a window longer than 30 days). Let the user set X; suggest a starting value and say it's a starting point. **Every post-launch tier gets its own gate, not just Tier 2:** in the platform table, each Tier 2+ row states when it starts — the measurement window after the previous tier ships and the metric that must be met (e.g., "Weeks 45–52, after a 4-week window; start when mobile-web DAU share ≥ X%"). Optional or undecided tiers still name the metric that would trigger them. **Do not list retention or engagement metrics as Tier 1 release gates**—those are measured post-launch. Tier 1 gates cover functionality, stability (crash-free sessions), compliance, and performance (load times, API response times). Retention gates apply only to *transitions between tiers* after the product ships.
 
 **Check volatile facts.** Store fees, target API levels, Manifest V3 rules, payment-link rules, and AI model names change. If a template's **Last verified** date is more than 6 months old, or you're quoting a fee or policy number, verify it against current official documentation first (use a docs lookup tool if available) and cite the source. If you can't verify, say so.
 - **AI models:** don't name a specific model version from memory. Check the provider's current model list, or name only the provider and capability tier ("a current mid-size model from provider X"). Also consider built-in on-device options (e.g., browser or OS AI APIs) before assuming cloud inference.
@@ -214,7 +217,9 @@ Use the appropriate platform template as the base structure (see Template Refere
 
 At the end, ask:
 
-> "This architecture assumes [your key decision, e.g., 'mobile-first with iOS + web shipping together']. Want to explore alternatives? For example, what if you went [Android-first / desktop-first / web-only]? I can show you the tradeoffs side-by-side."
+> "This architecture assumes [your key decision, e.g., 'mobile-first with iOS + web shipping together']. Want to explore alternatives? For example, what if you went [alternative 1] or [alternative 2]? I can show you the tradeoffs side-by-side."
+
+Always name **at least 2 specific alternatives** that fit this app (e.g., "Android-first" and "web-only"), not one.
 
 If they say yes, show 2–3 alternative architectures in a **side-by-side comparison table**:
 
@@ -269,7 +274,7 @@ A table with one row per assumption (stated or inferred): the assumption, whethe
 | Solo developer, ~20 hrs/week | Inferred (isolation default) | Cross-platform approach; timeline ~3x (heuristic) |
 
 ### 4. Exploration Question
-Ask if they want to compare alternatives. If yes, show 2–3 side-by-side options. If no, you're done.
+Offer at least 2 named alternatives to compare. If they say yes, show 2–3 side-by-side options. If no, you're done.
 
 ---
 
