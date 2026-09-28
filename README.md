@@ -1,6 +1,6 @@
 # Platform-Architecture
 
-**platform-designer** is a Claude skill that turns an app idea into a platform architecture plan. It covers:
+**Software Platform Architect** (plugin `software-platform-architect`, skill `platform-designer`) is a Claude plugin that turns an app idea into a platform architecture plan. It covers:
 - which platforms to ship first
 - native vs cross-platform
 - a tier-by-tier rollout with metric gates
@@ -11,17 +11,17 @@
 1. Add this repository as a plugin marketplace, then install the plugin:
    ```bash
    claude plugin marketplace add BenFlash-Public/Platform-Architecture
-   claude plugin install platform-designer@benflash
+   claude plugin install software-platform-architect@benflash
    ```
 2. Start a new Claude Code session, or run `/reload-plugins` in an open one.
 3. Use it:
-   - **Directly:** `/platform-designer:platform-designer <your app idea>`
+   - **Directly:** `/software-platform-architect:platform-designer <your app idea>`
    - **Automatically:** describe a new app idea, and Claude picks up the skill when platform or architecture questions come up.
 
 Update or remove it later:
 ```bash
 claude plugin marketplace update benflash
-claude plugin uninstall platform-designer@benflash
+claude plugin uninstall software-platform-architect@benflash
 ```
 
 Working inside this repository, the skill also loads as a project skill, so no install is needed there: use `/platform-designer`.

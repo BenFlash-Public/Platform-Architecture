@@ -6,7 +6,8 @@
   },
   "plugins": [
     {
-      "name": "platform-designer",
+      "name": "software-platform-architect",
+      "displayName": "Software Platform Architect",
       "source": "./.claude/skills/platform-designer",
       "description": "Designs a platform architecture for a new app idea: platforms to ship first, native vs cross-platform, gated rollout tiers, and compliance built into the launch checklist."
     }

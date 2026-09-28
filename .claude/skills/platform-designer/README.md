@@ -1,6 +1,6 @@
-# Platform Designer
+# Software Platform Architect
 
-Turn an app idea into a platform architecture plan you can build from. Describe what you want to make, and Platform Designer recommends which platform to ship first, whether to go native or cross-platform, and a tier-by-tier rollout. The plan includes timelines scaled to your team, and each later tier waits on a measurable gate instead of a date. Compliance items that change your architecture are built into the launch checklist.
+Turn an app idea into a platform architecture plan you can build from. Describe what you want to make, and Software Platform Architect recommends which platform to ship first, whether to go native or cross-platform, and a tier-by-tier rollout. The plan includes timelines scaled to your team, and each later tier waits on a measurable gate instead of a date. Compliance items that change your architecture are built into the launch checklist.
 
 ## What you get
 
@@ -26,14 +26,14 @@ Turn an app idea into a platform architecture plan you can build from. Describe 
 In Claude, describe a new app idea, or ask "what platforms should I build first?" In Claude Code you can also call it directly:
 
 ```
-/platform-designer:platform-designer A habit tracker for two React developers, shipping in 3 months
+/software-platform-architect:platform-designer A habit tracker for two React developers, shipping in 3 months
 ```
 
 It asks up to three questions at a time. To skip them, say "don't ask questions", and it infers conservative defaults and lists every assumption it made.
 
 ## What it runs and sends
 
-Platform Designer is instructions only:
+Software Platform Architect is instructions only:
 - **No code:** it runs no scripts, hooks, or MCP servers.
 - **No network or storage:** it makes no network requests and stores no data.
 - **What Claude reads:** Claude reads the skill's own template files from this folder to build the plan.
