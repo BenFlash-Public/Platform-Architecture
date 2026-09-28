@@ -306,7 +306,7 @@
         {
           "id": "links_plausible",
           "kind": "substance",
-          "check": "Any documentation URLs look like real official URLs (e.g., docs.unity3d.com). Flag any that look invented; a human should click them."
+          "check": "Any documentation URLs look like real official URLs (e.g., docs.unity3d.com); flag any that look invented. N/A if the answer contains no URLs."
         }
       ],
       "skip_common": true,
