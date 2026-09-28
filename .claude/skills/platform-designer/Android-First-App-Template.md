@@ -11,6 +11,8 @@ description: For apps targeting Android-dominant markets (India, SE Asia) or tea
 
 **Last verified:** 2026-09-27 (Play Store target API 36+ requirement, Google Play Billing commission rates, Kotlin/Jetpack support)
 
+**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+
 ---
 
 ## Platform Status Table
@@ -32,7 +34,7 @@ description: For apps targeting Android-dominant markets (India, SE Asia) or tea
 **Challenge:** Android runs on devices from $50 (low memory) to $2000 (flagship).
 
 **Strategy:**
-- **Target API:** Minimum SDK 21 (Android 5.0, 2015); target API 36+ (required as of Aug 2024)
+- **Target API:** Minimum SDK 24 (current AndroidX default; many libraries no longer support 21); target API 36+ (required for new apps and updates from Aug 31, 2026 — [Play target API policy](https://developer.android.com/google/play/requirements/target-sdk))
 - **Memory:** Design for low-end devices (1GB RAM). If it works on Moto G (2GB RAM), it works everywhere.
 - **Network:** Assume 3G/4G with variable latency; batch requests, implement retry logic
 - **Screen sizes:** Test on phones (5.5–6.5"), tablets (7–10"), foldables (emerging)
@@ -130,7 +132,7 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 - [ ] Privacy policy and terms of service accessible in app + website
 - [ ] Privacy label completed (location, contacts, etc.)
 - [ ] Target SDK 34+ (required by Play Store)
-- [ ] No external payment links (Play Store rules)
+- [ ] Payment flows follow current Play payments policy for each country you ship in (external-link and alternative-billing rules vary by region; verify before launch)
 - [ ] Screenshots (4–8 per language) ready; show key features
 - [ ] App description clear; keywords relevant
 - [ ] Support email live
@@ -158,7 +160,7 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 - **Firebase:** Analytics, Crashlytics, Cloud Messaging, Authentication all free tier
 - **Hilt:** Dependency injection; reduces boilerplate
 
-**Alternatives:** Java (more boilerplate), React Native (slower than native)
+**Alternatives:** Java (more boilerplate), React Native/Expo or Flutter (one codebase for Android + iOS; native modules needed for some OS features), Kotlin Multiplatform (share business logic, keep native UI)
 
 ### Web (React + TypeScript)
 - **React:** Largest ecosystem; easy to hire; 100+ UI libraries
@@ -174,7 +176,7 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 
 ---
 
-## Sample Feature Roadmap (24 weeks to Tier 4)
+## Sample Feature Roadmap (32 weeks to Tier 4)
 
 ### Tier 1 (Weeks 1–12): Android MVP
 - Auth (email/password, Google Sign-In)
@@ -244,3 +246,15 @@ Web (Dashboard)┤                 └──> FCM (Firebase Cloud Messaging)
 - [ ] Generate signed APK; upload to Play Store Console
 - [ ] Play Store submission complete; compliance reviewed
 - [ ] Monitor Crashlytics, analytics, user reviews post-launch
+
+---
+
+## Post-Launch Operations
+
+| Area | Plan |
+|---|---|
+| **Release cadence** | Staged rollouts (e.g., 10% → 50% → 100%) through Play Console; halt on crash spikes |
+| **Minimum supported versions** | Raise minSdk deliberately and announce it; re-check the Play target API deadline every August |
+| **API versioning** | `/v1` from day 1; old APKs stay installed for months, so never break a shipped contract |
+| **Device coverage** | Keep a low-end, mid-range, and flagship device in the test matrix every release |
+| **Tier gate** | Start Tier 2 when retention and ANR/crash targets are met, not on a date |

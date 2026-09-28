@@ -11,6 +11,8 @@ description: For consumer/prosumer apps where users access primarily via mobile 
 
 **Last verified:** 2026-09-27 (App Store commission rates, iOS/Android API levels, StoreKit 2 support)
 
+**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+
 ---
 
 ## Platform Status Table
@@ -92,7 +94,7 @@ Android ─────┘                 ├──> Message Queue (for offline
 **Critical rule:** iOS revenue must align with Web. Examples:
 - If iOS charges $4.99/mo, web should be $4.99/mo (not $5.99)
 - If iOS offers free trial, web should offer same trial length
-- Apple takes 30% on IAP (15% for Small Business Program members); Stripe takes 2.9% + $0.30; US users can use external purchase links (30% avoided). Factor into pricing.
+- Apple takes 30% on IAP ([15% for Small Business Program](https://developer.apple.com/app-store/small-business-program/) members under $1M/yr); Stripe takes 2.9% + $0.30. On the US storefront, apps may link out to web checkout; the commission on link-outs is still subject to litigation — verify current terms. Factor into pricing.
 
 ---
 
@@ -140,7 +142,7 @@ Android ─────┘                 ├──> Message Queue (for offline
 - **Combine:** For reactive state management
 - **StoreKit 2:** Apple's latest IAP framework; handles revenue complexities
 
-**Alternatives:** React Native (faster cross-platform but slower performance, harder debugging)
+**Alternatives:** React Native/Expo or Flutter (ship iOS + Android from one codebase; pick when the team is small and Android can't wait until Tier 3)
 
 ### Web (PWA)
 - **React:** Largest ecosystem, easiest to hire; 100+ UI component libraries
@@ -160,7 +162,7 @@ Android ─────┘                 ├──> Message Queue (for offline
 
 ---
 
-## Sample Feature Roadmap (16 weeks to Tier 3)
+## Sample Feature Roadmap (24 weeks to Tier 3)
 
 ### Tier 1 (Weeks 1–7): iOS + Mobile Web MVP
 - Auth (email/password, OAuth)
@@ -211,3 +213,15 @@ Android ─────┘                 ├──> Message Queue (for offline
 - [ ] Privacy policy and ToS in place
 - [ ] App Store submission complete; build approved
 - [ ] Initial users (friends, beta testers) can install and use
+
+---
+
+## Post-Launch Operations
+
+| Area | Plan |
+|---|---|
+| **Release cadence** | iOS every 2–4 weeks (review adds 1–3 days); web deploys continuously behind feature flags |
+| **Minimum supported versions** | Support current iOS and the previous major version; add a server-driven force-update check before Tier 1 ships so old clients can be retired |
+| **API versioning** | Version the API (`/v1`) from day 1; old app builds stay in the wild for months, so never break a shipped contract — add fields, don't rename them |
+| **Support & incidents** | Crash-free sessions ≥ 99% as the alert threshold; critical fixes via expedited App Review when needed |
+| **Tier gate** | Start Tier 2 when D30 retention and conversion meet the targets set in Step 4, not on a date |

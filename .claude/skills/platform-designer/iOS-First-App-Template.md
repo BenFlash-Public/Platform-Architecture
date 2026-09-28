@@ -11,6 +11,8 @@ description: For premium consumer apps requiring deep OS integration (HealthKit,
 
 **Last verified:** 2026-09-27 (HealthKit SDK, App Store commission rates, StoreKit 2, iOS minimum version support)
 
+**Timeline assumption:** Week ranges assume ~2 full-time engineers ("Parallel" rows need at least 2). Scale per SKILL.md Step 4.
+
 ---
 
 ## Platform Status Table
@@ -145,7 +147,7 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 ### App Store Compliance
 - [ ] Privacy policy and terms of service in app + on website
 - [ ] App privacy label completed (location, health, etc.)
-- [ ] No hardcoded links to external payment (App Store rules)
+- [ ] Payment links follow current App Review Guidelines for each storefront (US storefront allows external purchase links; other regions differ — verify before launch)
 - [ ] Screenshots ready (5 per locale; highlight key features)
 - [ ] App description clear; keywords relevant
 - [ ] Support email live
@@ -170,7 +172,7 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 - **StoreKit 2:** Apple's latest In-App Purchase framework; handles receipts, entitlements, subscriptions
 - **HealthKit:** Native health data integration; automatic iCloud sync
 
-**Alternatives:** Objective-C (deprecated), React Native (slower, harder debugging)
+**Alternatives:** Objective-C (legacy), React Native/Expo (JS/TS team; native modules for deep OS features), Flutter (single Dart codebase; HealthKit available via plugins such as [`health`](https://pub.dev/packages/health))
 
 ### Web (React + TypeScript)
 - **React:** Largest ecosystem; easy to hire; 100+ UI libraries
@@ -186,7 +188,7 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 
 ---
 
-## Sample Feature Roadmap (20 weeks to Tier 4)
+## Sample Feature Roadmap (30 weeks to Tier 4)
 
 ### Tier 1 (Weeks 1–10): iOS MVP
 - Auth (email/password, Apple Sign-In)
@@ -226,7 +228,7 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 | **Battery drain from location** | Users uninstall; 1-star reviews | Use significant location updates, not continuous; add battery warning |
 | **Building web too late** | Growth plateau without web option | Start web in parallel (Tier 2); PWA ready by week 12 |
 | **Ignoring Android until Tier 4** | Data sync issues between iOS/Android | Design sync protocol now; test with both platforms early |
-| **App Store rejection** | Delays launch 1–2 weeks | Review guidelines early (privacy labels, no external payments) |
+| **App Store rejection** | Delays launch 1–2 weeks | Review guidelines early (privacy labels, per-storefront payment-link rules) |
 
 ---
 
@@ -252,3 +254,15 @@ Web (Dashboard)┤                 └──> Push Notification Service (APNs)
 - [ ] App Store submission complete; metadata reviewed for compliance
 - [ ] Monitoring dashboard live (Crashlytics, analytics)
 - [ ] Support email live and monitored
+
+---
+
+## Post-Launch Operations
+
+| Area | Plan |
+|---|---|
+| **Release cadence** | Every 2–4 weeks via TestFlight → App Store; phased release for risky builds |
+| **Minimum supported versions** | Current iOS and previous major; server-driven force-update check before launch |
+| **API versioning** | `/v1` from day 1; Android (Tier 4) and web must speak the same contract — never break shipped clients |
+| **HealthKit / sensitive data** | Re-review privacy labels and permission copy on every release that touches new data types |
+| **Tier gate** | Start Tier 2 when retention and crash-free targets are met, not on a date |
