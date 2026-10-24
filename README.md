@@ -49,7 +49,7 @@ Working inside this repository, the skill also loads as a project skill, so no i
 
 ## Status
 
-- **Version:** 0.2.0.
+- **Version:** 0.2.1.
 - **Eval results so far:**
   - v0.1.0: the skill passed 82% of correctness checks vs 50% without it (Sonnet, evals 1–7, 3 runs each).
   - v0.2.0 targets the checks that failed repeatedly in that run (unlabelled numbers, ungated optional tiers, BLE battery/OTA gates, Android API levels, deletion vs retention). Its 3-run results are posted on the PR that introduced it.
